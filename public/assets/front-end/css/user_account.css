@@ -1,0 +1,34 @@
+@import url('https://fonts.googleapis.com/css2?family=Charm:wght@400;700&family=Jost:ital,wght@0,100..900;1,100..900&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --shadow: 0px 10px 13px -10px #ddd;
+
+  --shadow-hover: 0px 10px 20px 0px #ddd;
+
+  --border: 1px solid #f3f3f3;
+
+  --animate: translate(0, -2%);
+  --gradient-single: rgba(255, 134, 23, 0.9);
+  --bg-color:#cf3341;
+  --text-danger:#cf3341;
+  --text-white:#fff;
+  --text-black:#232323;
+  --primary-color:#f26d21;
+  --radius: 13px;
+  --lato: "Lato", sans-serif;
+  --Charm: "Charm", cursive;
+  --jost: "Jost", sans-serif;
+}
+a:hover{text-decoration: none;}
+.btn-primary{background-color: #f26d21;border: none;}
+/*user dashboard sidebar*/
+.sidebarL > h3 > a {
+    color: var(--primary-color);
+    font-size: 20px;
+    font-family: var(--lato);
+}

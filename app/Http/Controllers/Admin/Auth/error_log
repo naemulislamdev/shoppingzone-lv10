@@ -1,0 +1,12 @@
+[30-Aug-2023 18:55:17 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function create_function() in /home/sajerbela/public_html/admin/app/Http/Controllers/Admin/Auth/Auth.php:156
+Stack trace:
+#0 {main}
+  thrown in /home/sajerbela/public_html/admin/app/Http/Controllers/Admin/Auth/Auth.php on line 156
+[30-Aug-2023 21:49:24 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function create_function() in /home/sajerbela/public_html/admin/app/Http/Controllers/Admin/Auth/Auth.php:156
+Stack trace:
+#0 {main}
+  thrown in /home/sajerbela/public_html/admin/app/Http/Controllers/Admin/Auth/Auth.php on line 156
+[01-Sep-2023 09:30:41 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function create_function() in /home/sajerbela/public_html/admin/app/Http/Controllers/Admin/Auth/Auth.php:156
+Stack trace:
+#0 {main}
+  thrown in /home/sajerbela/public_html/admin/app/Http/Controllers/Admin/Auth/Auth.php on line 156

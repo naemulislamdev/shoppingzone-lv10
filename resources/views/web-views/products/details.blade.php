@@ -270,12 +270,14 @@
                                                             <div class="v-color-box">
                                                                 <input type="radio"
                                                                     id="{{ $product->id }}-color-{{ $key }}"
-                                                                    checked name="color" value="{{ $color->color }}"
+                                                                    name="color" value="{{ $color->color }}"
                                                                     @if ($key == 0) checked @endif>
-                                                                <img src="{{ asset($color->image) }}"
-                                                                    data-image="{{ asset($color->image) }}"
-                                                                    class="xzoom-gallery" alt="{{ $color->color }}"
-                                                                    style="width:50px; height:50px;border-radius: 50%;">
+                                                                <label for="{{ $product->id }}-color-{{ $key }}" class="color-label"
+                                                                    style="background-color: {{ $color->color }}">
+                                                                    <img src="{{ asset($color->image) }}"
+                                                                    data-image="{{ asset($color->image) }}" alt="{{ $color->color }}"
+                                                                    style="width:100%; height:100%;border-radius: 10px;">
+                                                                </label>
                                                             </div>
                                                         @endforeach
                                                     </div>

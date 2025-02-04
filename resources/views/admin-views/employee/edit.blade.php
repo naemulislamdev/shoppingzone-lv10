@@ -105,10 +105,6 @@
             </div>
         </div>
     </div>
-
-    <!--modal-->
-    @include('shared-partials.image-process._image-crop-modal',['modal_id'=>'employee-image-modal'])
-    <!--modal-->
 </div>
 @endsection
 
@@ -140,12 +136,4 @@
             width: 'resolve'
         });
     </script>
-
-    @include('shared-partials.image-process._script',[
-   'id'=>'employee-image-modal',
-   'height'=>200,
-   'width'=>200,
-   'multi_image'=>false,
-   'route'=>route('image-upload')
-   ])
 @endpush

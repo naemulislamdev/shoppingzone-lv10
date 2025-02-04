@@ -74,8 +74,10 @@ class CartController extends Controller
         }
         //check the color enabled or disabled for the product
         if ($request->has('color')) {
+            //dd($request['color']);
             $data['color'] = $request['color'];
             $str = Color::where('code', $request['color'])->first()->name;
+            //dd($str);
             $variations['color'] = $str;
         }
         //Gets all the choice values of customer choice option and generate a string like Black-S-Cotton

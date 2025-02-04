@@ -1828,4 +1828,5 @@
   'Extra Discount' => 'Extra Discount',
   'Product Code' => 'Product Code',
   'Search Code & Name' => 'Search Code & Name',
+  'Product Variations' => 'Product Variations',
 );

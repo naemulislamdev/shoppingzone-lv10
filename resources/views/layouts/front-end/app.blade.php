@@ -54,7 +54,7 @@
     border-radius: 5px;
     width: 100%;
     text-align: center;
-    height: 30px !important;
+    /* height: 30px !important; */
     position: relative;
 }
 .v-color-box>input:checked+.color-label,.v-size-box>input:checked+.size-label {

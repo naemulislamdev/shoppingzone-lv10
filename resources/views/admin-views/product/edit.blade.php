@@ -17,7 +17,6 @@
             display: none;
             /* Hide the actual file input */
         }
-
         .custom-file-label {
             display: inline-block;
             background-color: #007bff;

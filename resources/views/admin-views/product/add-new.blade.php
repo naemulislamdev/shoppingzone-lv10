@@ -183,7 +183,7 @@
                                                 <a class="style-one-pro" style="cursor: pointer;"
                                                     onclick="document.getElementById('generate_number').value = getRndInteger()">{{ \App\CPU\translate('generate') }}
                                                     {{ \App\CPU\translate('code') }}</a></label>
-                                            <input type="text" minlength="6" id="generate_number" name="code"
+                                            <input type="text" minlength="4" id="generate_number" name="code"
                                                 class="form-control" value="{{ old('code') }}"
                                                 placeholder="{{ \App\CPU\translate('code') }}">
                                             @error('code')

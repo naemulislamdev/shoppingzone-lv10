@@ -17,7 +17,6 @@
     </tr>
     </thead>
     <tbody>
-    @endif
     @foreach ($combinations as $key => $combination)
         <tr>
             <td>
@@ -43,4 +42,5 @@
     @endforeach
     </tbody>
 </table>
+@endif
 

@@ -3,7 +3,17 @@
 @section('title', \App\CPU\translate('Product List'))
 
 @push('css_or_js')
+<style>
+    .product-list-img {
+    transition: transform 0.3s ease-in-out;
+    transform-origin: center;
+}
 
+.product-list-img:hover {
+    transform: scale(5.1);
+}
+
+</style>
 @endpush
 
 @section('content')
@@ -77,7 +87,7 @@
                                     <th scope="row">{{$pro->firstItem()+$k}}</th>
                                     <td>
                                         <img onerror="this.src='{{asset('assets/front-end/img/image-place-holder.png')}}'" src="{{asset('storage/product/thumbnail')}}/{{$p['thumbnail']}}"
-                                             class="avatar avatar-lg">
+                                             class="avatar avatar-lg product-list-img">
                                     </td>
                                     <td>
                                         <a href="{{route('admin.product.view',[$p['id']])}}">

@@ -230,7 +230,7 @@ class LandingPagesController extends Controller
         $productLandingpage = ProductLandingPage::create([
             'title' => $request->title,
             'slug' => Str::slug($request->title),
-            'slider_img' => $images,
+            'slider_images' => $images,
             'product_id' => $request->product_id,
             'description' => $request->description,
             'feature_list' => $featureList,

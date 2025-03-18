@@ -272,11 +272,13 @@
                                                                     id="{{ $product->id }}-color-{{ $key }}"
                                                                     name="color" value="{{ $color->color }}"
                                                                     @if ($key == 0) checked @endif>
-                                                                <label for="{{ $product->id }}-color-{{ $key }}" class="color-label"
+                                                                <label for="{{ $product->id }}-color-{{ $key }}"
+                                                                    class="color-label"
                                                                     style="background-color: {{ $color->color }}">
                                                                     <img src="{{ asset($color->image) }}"
-                                                                    data-image="{{ asset($color->image) }}" alt="{{ $color->color }}"
-                                                                    style="width:100%; height:100%;border-radius: 10px;">
+                                                                        data-image="{{ asset($color->image) }}"
+                                                                        alt="{{ $color->color }}"
+                                                                        style="width:100%; height:100%;border-radius: 10px;">
                                                                 </label>
                                                             </div>
                                                         @endforeach
@@ -1078,4 +1080,19 @@
     {{-- <script type="text/javascript"
         src="https://platform-api.sharethis.com/js/sharethis.js#property=5f55f75bde227f0012147049&product=sticky-share-buttons"
         async="async"></script> --}}
+
+    <script src="https://ai.szbdfinancing.com/static/js/product-sdk.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const productAPI = new ProductAPI("https://ai.szbdfinancing.com");
+
+            async function loadProduct() {
+                const product = await productAPI.analyzeProduct({{ $product->id }}, "view");
+                console.log(product);
+            }
+
+            loadProduct();
+        });
+    </script>
 @endpush

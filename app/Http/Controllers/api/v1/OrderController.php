@@ -284,4 +284,17 @@ class OrderController extends Controller
         // ];
         return response()->json($data, 200);
     }
+    public function getOrderDetails($order_id)
+    {
+        $order = Order::with('details')->find($order_id);
+
+        if (!$order) {
+            return response()->json(['message' => 'Order not found'], 404);
+        }
+
+        return response()->json([
+            'order' => $order,
+            'order_details' => $order->orderDetails
+        ]);
+    }
 }

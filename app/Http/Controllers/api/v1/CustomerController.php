@@ -61,10 +61,11 @@ class CustomerController extends Controller
         if($request->user()->id == $id)
         {
             $user = User::find($id);
+            $user->is_active = 0;
+            $user->save();
 
-            ImageManager::delete('/profile/' . $user['image']);
-
-            $user->delete();
+            // ImageManager::delete('/profile/' . $user['image']);
+            // $user->delete();
            return response()->json(['message' => translate('Your_account_deleted_successfully!!')],200);
 
         }else{

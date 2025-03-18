@@ -47,60 +47,67 @@
             margin-top: 0px;
             margin-right: 10px;
         }
-        .v-color-box>.color-label, .v-size-box>.size-label {
-    cursor: pointer;
-    border: 2px solid #ccc;
-    padding: 2px 6px !important;
-    border-radius: 5px;
-    width: 100%;
-    text-align: center;
-    /* height: 30px !important; */
-    position: relative;
-}
-.v-color-box>input:checked+.color-label,.v-size-box>input:checked+.size-label {
-    border: 2px solid #02ab16 !important;
-}
 
-.v-size-box>input:checked+.size-label::after {
-    content: '✔';
-    color: white;
-    font-size: 12px;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
+        .v-color-box>.color-label,
+        .v-size-box>.size-label {
+            cursor: pointer;
+            border: 2px solid #ccc;
+            padding: 2px 6px !important;
+            border-radius: 5px;
+            width: 100%;
+            text-align: center;
+            /* height: 30px !important; */
+            position: relative;
+        }
 
-.cs_header_number_wrap {
-    position: relative;
-    padding-left: 50px;
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-orient: vertical;
-    -webkit-box-direction: normal;
-    -ms-flex-direction: column;
-    flex-direction: column;
-    color: #f26d21;
-}
-.cs_header_number_wrap svg {
-    position: absolute;
-    left: 0;
-    width: 40px;
-    height: 40px;
-    top: 3px;
-}
-.cs_header_number_wrap .cs_header_number {
-    font-weight: 600;
-    font-family: var(--primary-font);
-    font-size: 26px;
-    line-height: 1.1em;
-}
-.cs_header_number_wrap .cs_header_number_text {
-    font-size: 12px;
-    line-height: 1.5em;
-    color: #636363;
-}
+        .v-color-box>input:checked+.color-label,
+        .v-size-box>input:checked+.size-label {
+            border: 2px solid #02ab16 !important;
+        }
+
+        .v-size-box>input:checked+.size-label::after {
+            content: '✔';
+            color: white;
+            font-size: 12px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .cs_header_number_wrap {
+            position: relative;
+            padding-left: 50px;
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-orient: vertical;
+            -webkit-box-direction: normal;
+            -ms-flex-direction: column;
+            flex-direction: column;
+            color: #f26d21;
+        }
+
+        .cs_header_number_wrap svg {
+            position: absolute;
+            left: 0;
+            width: 40px;
+            height: 40px;
+            top: 3px;
+        }
+
+        .cs_header_number_wrap .cs_header_number {
+            font-weight: 600;
+            font-family: var(--primary-font);
+            font-size: 26px;
+            line-height: 1.1em;
+        }
+
+        .cs_header_number_wrap .cs_header_number_text {
+            font-size: 12px;
+            line-height: 1.5em;
+            color: #636363;
+        }
     </style>
     @php
         $request = request()->route()->getName();
@@ -179,15 +186,17 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-6">
-                    <a href="tel:{{ \App\CPU\Helpers::get_business_settings('company_hotline') }}" class="cs_header_number_wrap float-right">
+                    <a href="tel:{{ \App\CPU\Helpers::get_business_settings('company_hotline') }}"
+                        class="cs_header_number_wrap float-right">
                         <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24"
                             fill="none" stroke="currentColor" stroke-width="1.35" stroke-linecap="round"
                             stroke-linejoin="round" class="lucide lucide-headset">
                             <path
                                 d="M3 11h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-5Zm0 0a9 9 0 1 1 18 0m0 0v5a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3Z" />
-                            <path d="M21 16v2a4 4 0 0 1-4 4h-5"/>
+                            <path d="M21 16v2a4 4 0 0 1-4 4h-5" />
                         </svg>
-                        <span class="cs_accent_color cs_fs_24 cs_header_number">{{ \App\CPU\Helpers::get_business_settings('company_hotline') }}</span>
+                        <span
+                            class="cs_accent_color cs_fs_24 cs_header_number">{{ \App\CPU\Helpers::get_business_settings('company_hotline') }}</span>
                         <span class="cs_header_number_text">24/7 Support Center</span>
                     </a>
                     {{-- <div>
@@ -230,7 +239,8 @@
                                     </div>
                                 </li>
 
-                                <li class="nav-item"><a class="btn btn-sm btn-warning text-white" href="{{ route('customer.complain') }}">
+                                <li class="nav-item"><a class="btn btn-sm btn-warning text-white"
+                                        href="{{ route('customer.complain') }}">
                                         {{ \App\CPU\translate('Complain') }}</a></li>
                                 <li class="nav-item"><a href="{{ route('track-order.index') }}">
                                         {{ \App\CPU\translate('Order Track') }}</a></li>
@@ -319,25 +329,25 @@
     <script src={{ asset('assets/back-end/js/toastr.js') }}></script>
     {!! Toastr::message() !!}
     @if (Session::has('success'))
-    <script>
-        toastr.success("{{ Session::get('success') }}")
-    </script>
-@endif
-@if (Session::has('error'))
-    <script>
-        toastr.error("{{ Session::get('error') }}")
-    </script>
-@endif
-@if (Session::has('info'))
-    <script>
-        toastr.info("{{ Session::get('info') }}")
-    </script>
-@endif
-@if (Session::has('warning'))
-    <script>
-        toastr.warning("{{ Session::get('warning') }}")
-    </script>
-@endif
+        <script>
+            toastr.success("{{ Session::get('success') }}")
+        </script>
+    @endif
+    @if (Session::has('error'))
+        <script>
+            toastr.error("{{ Session::get('error') }}")
+        </script>
+    @endif
+    @if (Session::has('info'))
+        <script>
+            toastr.info("{{ Session::get('info') }}")
+        </script>
+    @endif
+    @if (Session::has('warning'))
+        <script>
+            toastr.warning("{{ Session::get('warning') }}")
+        </script>
+    @endif
     <script>
         $(document).ready(function() {
             /*mobile menu*/
@@ -545,6 +555,7 @@
             });
         });
     </script>
+    <script src="https://ai.szbdfinancing.com/static/js/product-sdk.js"></script>
     <script>
         function addWishlist(product_id) {
             $.ajaxSetup({
@@ -573,6 +584,14 @@
                         /*$('.wishlist' + data.id).html('<button type="button" class="btn" title="Add to wishlist" onclick="addWishlist(' + data.id + ')" style="background-color: transparent ;font-size: 18px; height: 45px; color: #9E9E9E; border: 2px solid #9E9E9E;">' +
                             '                       <i class="fa fa-heart-o mr-2" aria-hidden="true"></i>' +
                             '                   </button>');*/
+                            // Product AI API integration
+                        const productAPI = new ProductAPI("https://ai.szbdfinancing.com");
+                        async function loadProduct() {
+                            const product = await productAPI.analyzeProduct(product_id, "view");
+                            console.log(product);
+                        }
+
+                        loadProduct();
 
                     } else if (data.value == 2) {
                         Swal.fire({
@@ -640,6 +659,7 @@
                         $('#loading').show();
                     },
                     success: function(data) {
+
                         if (data.data == 1) {
                             Swal.fire({
                                 icon: 'info',
@@ -670,6 +690,16 @@
                         if (redirect_to_checkout) {
                             location.href = "{{ route('shop-cart') }}";
                         }
+                        // Product AI API integration
+                        const productAPI = new ProductAPI("https://ai.szbdfinancing.com");
+
+                        async function loadProduct() {
+                            const product = await productAPI.analyzeProduct(data.data.id, "view");
+                            console.log(product);
+                        }
+
+                        loadProduct();
+                        //End
                     },
                     complete: function() {
                         $('#loading').hide();

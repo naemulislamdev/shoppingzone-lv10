@@ -235,6 +235,7 @@ Route::middleware(['api_lang'])->prefix('v1')->group(function () {
     Route::prefix('order')->group(function () {
         Route::post('place', [OrderController::class,'place_order']);
     });
+    Route::get('order/details/{order_id}', [OrderController::class,'getOrderDetails']);
 
     Route::prefix('order')->group(function () {
         Route::get('track', [OrderController::class,'track_order']);

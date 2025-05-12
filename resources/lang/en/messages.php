@@ -1829,4 +1829,9 @@
   'Product Code' => 'Product Code',
   'Search Code & Name' => 'Search Code & Name',
   'Product Variations' => 'Product Variations',
+  'Report Analysis' => 'Report Analysis',
+  'Please select an analysis type to view the report.' => 'Please select an analysis type to view the report.',
+  'No data found for the selected analysis type.' => 'No data found for the selected analysis type.',
+  'App vs Web' => 'App vs Web',
+  'Signle Page Status' => 'Signle Page Status',
 );

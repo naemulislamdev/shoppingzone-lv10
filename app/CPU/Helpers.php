@@ -17,9 +17,63 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Storage;
+use Intervention\Image\ImageManager;
 
 class Helpers
 {
+    //Start image upload manager
+    public static function uploadWithCompress(string $dir, string $format, $image = null, int $targetSizeKB = 150)
+    {
+        if ($image !== null) {
+            $imageName = now()->toDateString() . '-' . uniqid() . '.' . $format;
+
+            if (!Storage::disk('public')->exists($dir)) {
+                Storage::disk('public')->makeDirectory($dir);
+            }
+
+            $manager = new ImageManager(\Intervention\Image\Drivers\Gd\Driver::class); // ✅ FIXED
+            $img = $manager->read($image->getPathname());
+
+            $quality = 90;
+            $tempPath = storage_path('app/temp_' . uniqid() . '.' . $format);
+            $targetSize = $targetSizeKB * 1024;
+
+            do {
+                $img->toJpeg(quality: $quality)->save($tempPath);
+                $currentSize = filesize($tempPath);
+                $quality -= 5;
+            } while ($currentSize > $targetSize && $quality > 10);
+
+            $finalContents = file_get_contents($tempPath);
+            Storage::disk('public')->put($dir . $imageName, $finalContents);
+            unlink($tempPath);
+
+            return $imageName;
+        }
+
+        return null;
+    }
+    public static function update(string $dir, $old_image, string $format, $image = null)
+    {
+        if (Storage::disk('public')->exists($dir . $old_image)) {
+            Storage::disk('public')->delete($dir . $old_image);
+        }
+        $imageName = Helpers::uploadWithCompress($dir, $format, $image);
+        return $imageName;
+    }
+    public static function delete($full_path)
+    {
+        if (Storage::disk('public')->exists($full_path)) {
+            Storage::disk('public')->delete($full_path);
+        }
+
+        return [
+            'success' => 1,
+            'message' => 'Removed successfully !'
+        ];
+    }
+    //End image upload manager
     public static function status($id)
     {
         if ($id == 1) {

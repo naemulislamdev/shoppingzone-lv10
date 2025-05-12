@@ -453,6 +453,29 @@ $route = request()->route()->getName();
                             </li>
                         </ul>
                     </li>
+                    <!-- Customer Analysis -->
+                    <li class="nav-item">
+                        <small
+                            class="nav-subtitle">AI Analysis</small>
+                        <small class="tio-more-horizontal nav-subtitle-replacer"></small>
+                    </li>
+                    <li class="navbar-vertical-aside-has-menu {{Request::is('admin/analysis/*')?'active':''}}">
+                        <a class="js-navbar-vertical-aside-menu-link nav-link nav-link-toggle" href="javascript:">
+                            <i class="tio-filter-outlined nav-icon"></i>
+                            <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">Product Analysis</span>
+                        </a>
+                        <ul class="js-navbar-vertical-aside-submenu nav nav-sub"
+                            style="display: {{Request::is('admin/analysis/*')?'block':'none'}}">
+
+                            <li class="nav-item {{Request::is('admin/analysis/*')?'active':''}}">
+                                <a class="nav-link " href="{{route('admin.analysis.report')}}" title="{{\App\CPU\translate('Report Analysis')}}">
+                                    <span class="tio-circle nav-indicator-icon"></span>
+                                    <span class="text-truncate">{{('View All Reports')}}
+                                </span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
                     <!-- End POS -->
 
                         @if(\App\CPU\Helpers::module_permission_check('marketing_section'))

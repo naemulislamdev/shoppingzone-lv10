@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\AnalysisController;
 use App\Http\Controllers\Admin\AttributeController;
 use App\Http\Controllers\Admin\Auth\LoginController;
 use App\Http\Controllers\Admin\BannerController;
@@ -108,6 +109,9 @@ Route::prefix('/admin')->as('admin.')->group(function () {
             Route::post('update/{id}', 'update')->name('update');
             Route::post('request', 'w_request')->name('request');
             Route::post('status-filter', 'status_filter')->name('status-filter');
+        });
+        Route::controller(AnalysisController::class)->prefix('/analysis')->as('analysis.')->middleware('module:user_section')->group(function () {
+            Route::get('report/', 'analysisReport')->name('report');
         });
 
         Route::controller(DealController::class)->prefix('/deal')->as('deal.')->middleware('module:marketing_section')->group(function () {

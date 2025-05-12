@@ -22,28 +22,12 @@
             <div class="card">
                 <div class="card-header">
                     {{ \App\CPU\translate('Landing Pages Form')}}
+                        <a href="{{route('admin.landingpages.landing')}}" class="btn btn-primary float-right">{{ \App\CPU\translate('Back')}}</a>
                 </div>
                 <div class="card-body">
                     <form action="{{route('admin.landingpages.landing_pages_update',$landing_pages->id)}}" method="post" style="text-align: {{Session::get('direction') === "rtl" ? 'right' : 'left'}};" enctype="multipart/form-data">
                         @csrf
-                        @php($language=\App\Model\BusinessSetting::where('type','pnc_language')->first())
-                        @php($language = $language->value ?? null)
-                        @php($default_lang = 'en')
-
-                        @php($default_lang = json_decode($language)[0])
-                        <ul class="nav nav-tabs mb-4">
-                            @foreach(json_decode($language) as $lang)
-                                <li class="nav-item">
-                                    <a class="nav-link lang_link {{$lang == $default_lang? 'active':''}}"
-                                       href="#"
-                                       id="{{$lang}}-link">{{\App\CPU\Helpers::get_language_name($lang).'('.strtoupper($lang).')'}}</a>
-                                </li>
-                            @endforeach
-                        </ul>
-
                         <div class="form-group">
-
-
 
                             <div class="row">
                                 <div class="col-md-12">
@@ -145,9 +129,6 @@
             </div>
         </div>
     </div>
-
-    <!--modal-->
-    @include('shared-partials.image-process._image-crop-modal',['modal_id'=>'banner-image-modal','width'=>1100,'margin_left'=>'-65%'])
 </div>
 @endsection
 
@@ -212,29 +193,6 @@
         });
     </script>
 
-    <!-- Page level custom scripts -->
-    <script>
-        $(".lang_link").click(function (e) {
-            e.preventDefault();
-            $(".lang_link").removeClass('active');
-            $(".lang_form").addClass('d-none');
-            $(this).addClass('active');
-
-            let form_id = this.id;
-            let lang = form_id.split("-")[0];
-            console.log(lang);
-            $("#" + lang + "-form").removeClass('d-none');
-            if (lang == '{{$default_lang}}') {
-                $(".from_part_2").removeClass('d-none');
-            } else {
-                $(".from_part_2").addClass('d-none');
-            }
-        });
-
-        $(document).ready(function () {
-            $('#dataTable').DataTable();
-        });
-    </script>
     <script>
         var imageCount = {{10-count(json_decode($landing_pages->main_banner))}};
         if (imageCount > 0) {
@@ -274,12 +232,4 @@
         });
     }
     </script>
-
-    @include('shared-partials.image-process._script',[
-     'id'=>'banner-image-modal',
-     'height'=>170,
-     'width'=>1050,
-     'multi_image'=>false,
-     'route'=>route('image-upload')
-     ])
 @endpush

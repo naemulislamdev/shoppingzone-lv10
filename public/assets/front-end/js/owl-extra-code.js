@@ -5,7 +5,7 @@ $('.homeCategories').owlCarousel({
     // animateOut: 'slideOutDown',
     // animateIn: 'flipInX',
     autoplay: true,
-    autoplayTimeout: 5000,
+    autoplayTimeout: 10000,
     autoplayHoverPause: true,
     nav: false,
     dots: false,

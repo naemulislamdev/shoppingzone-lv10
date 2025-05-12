@@ -35,30 +35,7 @@
                             style="text-align: {{ Session::get('direction') === 'rtl' ? 'right' : 'left' }};"
                             enctype="multipart/form-data">
                             @csrf
-                            @php($language = \App\Model\BusinessSetting::where('type', 'pnc_language')->first())
-                            @php($language = $language->value ?? null)
-                            @php($default_lang = 'en')
-
-                            @php($default_lang = json_decode($language)[0])
-                            <ul class="nav nav-tabs mb-4">
-                                @foreach (json_decode($language) as $lang)
-                                    <li class="nav-item">
-                                        <a class="nav-link lang_link {{ $lang == $default_lang ? 'active' : '' }}"
-                                            href="#"
-                                            id="{{ $lang }}-link">{{ \App\CPU\Helpers::get_language_name($lang) . '(' . strtoupper($lang) . ')' }}</a>
-                                    </li>
-                                @endforeach
-                            </ul>
                             <div class="form-group">
-                                @foreach (json_decode($language) as $lang)
-                                    <div class="row {{ $lang != $default_lang ? 'd-none' : '' }} lang_form"
-                                        id="{{ $lang }}-form">
-                                        <input type="text" name="deal_type" value="flash_deal" class="d-none">
-
-                                    </div>
-                                    <input type="hidden" name="lang[]" value="{{ $lang }}" id="lang">
-                                @endforeach
-
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="form-group">

@@ -29,6 +29,7 @@
             <div class="card">
                 <div class="card-header">
                     <h1 class="h3 mb-0 text-black-50">{{$deal->title}}</h1>
+                    <a href="{{route('admin.landingpages.landing')}}" class="btn btn-primary float-right">{{ \App\CPU\translate('Back')}}</a>
                 </div>
                 <div class="card-body">
                     <form action="{{route('admin.landingpages.add-product',$deal->id)}}" method="post">
@@ -37,14 +38,13 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <label for="name">{{ \App\CPU\translate('Add new product')}}</label>
-
                                     <select
                                     id="example-getting-started"
-                                        class=" js-example-responsive form-control"
+                                        class="js-example-responsive form-control"
                                         name="product_id[]" multiple="multiple">
                                         @foreach (\App\Model\Product::whereNotIn('id', $flash_deal_products)->active()->orderBy('id', 'DESC')->get() as $key => $product)
                                             <option value="{{ $product->id }}">
-                                                {{$product['name']}}
+                                                {{$product['name']}} || {{$product['code']}}
                                             </option>
                                         @endforeach
                                     </select>
@@ -72,7 +72,6 @@
                     </div>
                 </div>
 
-
                 <div class="card-body">
                     <div class="table-responsive">
                         <table class="table table-bordered" width="100%" cellspacing="0">
@@ -80,15 +79,28 @@
                             <tr>
                                 <th scope="col">{{ \App\CPU\translate('sl')}}</th>
                                 <th scope="col">{{ \App\CPU\translate('name')}}</th>
+                                <th scope="col">{{ \App\CPU\translate('code')}}</th>
+                                <th scope="col">{{ \App\CPU\translate('Signle Page Status')}}</th>
                                 <th scope="col">{{ \App\CPU\translate('price')}}</th>
                                 <th scope="col" style="width: 50px">{{ \App\CPU\translate('action')}}</th>
                             </tr>
                             </thead>
                             <tbody>
                             @foreach($products as $k=>$de_p)
+                            @php
+                                $single_product = \App\ProductLandingPage::where('product_id',$de_p->id)->first();
+                            @endphp
                                 <tr>
                                     <th scope="row">{{$products->firstitem()+$k}}</th>
                                     <td>{{$de_p->name}}</td>
+                                    <td>{{$de_p->code}}</td>
+                                    <td>
+                                        @if ($single_product)
+                                        <a href="#" class="bg-success text-white p-2">Already Added</a>
+                                        @else
+                                        <a href="#" class="bg-danger text-white p-2">Not Added</a>
+                                        @endif
+                                    </td>
                                     <td>{{\App\CPU\BackEndHelper::usd_to_currency($de_p->unit_price)}}</td>
 
                                     <td>

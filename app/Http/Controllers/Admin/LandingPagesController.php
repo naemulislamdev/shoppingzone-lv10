@@ -74,10 +74,17 @@ class LandingPagesController extends Controller
     public function status_update(Request $request)
     {
 
-        // DB::table('landing_pages')->where(['status' => 1])->update(['status' => 0]);
-        DB::table('landing_pages')->where(['id' => $request['id']])->update([
-            'status' => $request['status'],
-        ]);
+        $lPage = DB::table('landing_pages')->get();
+        foreach ($lPage as $item) {
+            $status = 0;
+            if ($item->id == $request['id']) {
+                $status = 1;
+            }
+            DB::table('landing_pages')->where(['id' => $item->id])->update([
+                'status' => $status,
+            ]);
+        }
+
         return response()->json([
             'success' => 1,
         ], 200);
@@ -438,7 +445,7 @@ class LandingPagesController extends Controller
         }
 
         $sections = $productLandingpage->landingPageSection;
-        if($sections){
+        if ($sections) {
             foreach ($sections as $item) {
                 //dd($item->section_img);
                 if ($item->section_img) {

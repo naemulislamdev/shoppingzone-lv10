@@ -4,7 +4,7 @@ namespace App\CPU;
 
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
-use Intervention\Image\Facades\Image;
+use Illuminate\Support\Str;
 
 class ImageManager
 {
@@ -42,6 +42,5 @@ class ImageManager
             'success' => 1,
             'message' => 'Removed successfully !'
         ];
-
     }
 }

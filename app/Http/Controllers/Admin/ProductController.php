@@ -238,7 +238,8 @@ class ProductController extends BaseController
                 }
                 $p->images = json_encode($product_images);
             }
-            $p->thumbnail = ImageManager::upload('product/thumbnail/', 'png', $request->image);
+            //$p->thumbnail = ImageManager::upload('product/thumbnail/', 'png', $request->image);
+            $p->thumbnail = Helpers::uploadWithCompress('product/thumbnail/', 'png', $request->image, 150);
             $p->size_chart = ImageManager::upload('product/thumbnail/', 'png', $request->size_chart);
 
             $p->meta_title = $request->meta_title;

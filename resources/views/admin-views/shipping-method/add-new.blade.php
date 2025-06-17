@@ -92,7 +92,7 @@
                                         <th scope="row">{{$k+1}}</th>
                                         <td>{{$method['title']}}</td>
                                         <td>
-                                            {{$method['duration']}}
+                                            {{$method['duration'] != null ? $method['duration'] : 'N/A'}}
                                         </td>
                                         <td>
                                             {{\App\CPU\BackEndHelper::set_symbol(\App\CPU\BackEndHelper::usd_to_currency($method['cost']))}}

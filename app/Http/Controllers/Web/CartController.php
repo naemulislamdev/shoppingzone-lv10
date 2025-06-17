@@ -151,6 +151,66 @@ class CartController extends Controller
             'count' => session()->has('cart') ? count(session()->get('cart')) : 0
         ]);
     }
+    public function subdomainOrdernow($id)
+    {
+        $request = request();
+        $quantity = 1;
+        $product = Product::find($id);
+        $data = array();
+        $data['id'] = $product->id;
+        $str = '';
+        $variations = [];
+        $price = 0;
+        //chek if out of stock
+        if ($product['current_stock'] < $quantity) {
+            return response()->json([
+                'data' => 0
+            ]);
+        }
+
+        //Check the string and decreases quantity for the stock
+        if ($str != null) {
+            $count = count(json_decode($product->variation));
+            for ($i = 0; $i < $count; $i++) {
+                if (json_decode($product->variation)[$i]->type == $str) {
+                    $price = json_decode($product->variation)[$i]->price;
+                    if (json_decode($product->variation)[$i]->qty < $quantity) {
+                        return response()->json([
+                            'data' => 0
+                        ]);
+                    }
+                }
+            }
+        } else {
+            $price = $product->unit_price;
+        }
+
+        $tax = ($price * $product->tax) / 100;
+        $shipping_id = 1;
+        $shipping_cost = 0;
+
+        $data['quantity'] = $quantity;
+        $data['shipping_method_id'] = $shipping_id;
+        $data['price'] = $price;
+        $data['tax'] = $tax;
+        $data['slug'] = $product->slug;
+        $data['name'] = $product->name;
+        $data['discount'] = Helpers::get_product_discount($product, $price);
+        $data['shipping_cost'] = $shipping_cost;
+        $data['thumbnail'] = $product->thumbnail;
+
+        if ($request->session()->has('cart')) {
+            $cart = $request->session()->get('cart', collect([]));
+            $cart->push($data);
+        } else {
+            $cart = collect([$data]);
+            $request->session()->put('cart', $cart);
+        }
+
+        session()->forget('coupon_code');
+        session()->forget('coupon_discount');
+        return redirect()->route('shop-cart');
+    }
 
     public function updateNavCart()
     {

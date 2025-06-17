@@ -149,6 +149,8 @@
                     </div>
                 </div>
             </form>
+            <a href="{{ route('admin.reviews.create.product') }}" class="btn btn-secondary btn-block"><i
+                    class="tio-reset nav-icon"></i>{{ \App\CPU\translate('Add New Review') }}</a>
         </div>
         <!-- End Page Header -->
         <div class="card">
@@ -165,6 +167,7 @@
                             <th>{{ \App\CPU\translate('Review') }}</th>
                             <th>{{ \App\CPU\translate('date') }}</th>
                             <th>{{ \App\CPU\translate('status') }}</th>
+                            <th>{{ \App\CPU\translate('Action') }}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -184,6 +187,9 @@
                                             <a href="{{ route('admin.customer.view', [$review->customer_id]) }}">
                                                 {{ $review->customer->f_name . ' ' . $review->customer->l_name }}
                                             </a>
+                                        @elseif ($review->customer_name)
+                                            <label
+                                                class="badge badge-warning">{{ $review->customer_name }}</label>
                                         @else
                                             <label
                                                 class="badge badge-danger">{{ \App\CPU\translate('customer_removed') }}</label>
@@ -220,6 +226,9 @@
                                                 <span class="toggle-switch-indicator"></span>
                                             </span>
                                         </label>
+                                    </td>
+                                    <td>
+                                        <a id="{{ $review->id }}" class="btn btn-sm btn-danger delete">{{ \App\CPU\translate('Delete') }}</a>
                                     </td>
 
                                 </tr>
@@ -313,5 +322,37 @@
             }
 
         })
+    </script>
+    <script>
+        $(document).on('click', '.delete', function () {
+            var id = $(this).attr("id");
+            Swal.fire({
+                title: "{{\App\CPU\translate('Are_you_sure_delete_this_review')}}?",
+                text: "{{\App\CPU\translate('You_will_not_be_able_to_revert_this')}}!",
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: '{{\App\CPU\translate('Yes')}}, {{\App\CPU\translate('delete_it')}}!',
+                type: 'warning',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.value) {
+                    $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+                        }
+                    });
+                    $.ajax({
+                        url: "{{route('admin.reviews.product.delete')}}",
+                        method: 'POST',
+                        data: {id: id},
+                        success: function () {
+                            toastr.success('{{\App\CPU\translate('Review_deleted_successfully')}}');
+                            location.reload();
+                        }
+                    });
+                }
+            })
+        });
     </script>
 @endpush

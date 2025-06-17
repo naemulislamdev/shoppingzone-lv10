@@ -289,6 +289,9 @@ Route::prefix('/admin')->as('admin.')->group(function () {
         });
         Route::controller(ReviewsController::class)->prefix('/reviews')->as('reviews.')->middleware('module:business_section')->group(function () {
             Route::get('list', 'list')->name('list')->middleware('actch');
+            Route::get('create', 'createProductReviewForm')->name('create.product')->middleware('actch');
+            Route::post('create/store', 'createProductReview')->name('create.product.store')->middleware('actch');
+            Route::post('delete/review', 'deleteProductReview')->name('product.delete')->middleware('actch');
             Route::get('customer-list', 'clientList')->name('clientList')->middleware('actch');
             Route::get('export', 'export')->name('export')->middleware('actch');
             //Route::get('export', 'export')->name('export')->middleware('actch');

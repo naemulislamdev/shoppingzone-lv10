@@ -19,11 +19,55 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\ImageManager;
+use Spatie\ImageOptimizer\OptimizerChainFactory;
 
 class Helpers
 {
     //Start image upload manager
-    public static function uploadWithCompress(string $dir, string $format, $image = null, int $targetSizeKB = 150)
+    public static function uploadWithCompress(string $dir, string $format, int $targetSizeKB, $image = null)
+    {
+        if ($image !== null) {
+
+            $fileSize = $image->getSize();
+            $finalSize = number_format($fileSize / 1024, 2);
+
+            $imageName = now()->toDateString() . '-' . uniqid() . '.' . $format;
+
+            if (!Storage::disk('public')->exists($dir)) {
+                Storage::disk('public')->makeDirectory($dir);
+            }
+            $tempPath = null;
+            $finalContents = null;
+            if ($finalSize > $targetSizeKB) {
+                $manager = new ImageManager(\Intervention\Image\Drivers\Gd\Driver::class);
+                $img = $manager->read($image->getPathname());
+
+                $quality = 90;
+                $tempPath = storage_path('app/temp_' . uniqid() . '.' . $format);
+
+                $targetSize = $targetSizeKB * 1024;
+
+                do {
+                    $img->toJpeg($quality)->save($tempPath);
+                    $currentSize = filesize($tempPath);
+                    $quality -= 5;
+                } while ($currentSize > $targetSize && $quality > 10);
+
+                $finalContents = file_get_contents($tempPath);
+            } else {
+                $finalContents = file_get_contents($image);
+            }
+            Storage::disk('public')->put($dir . $imageName, $finalContents);
+            if ($tempPath) {
+                unlink($tempPath);
+            }
+
+            return $imageName;
+        }
+
+        return null;
+    }
+    public static function uploadWithCompress2(string $dir, string $format, $image = null)
     {
         if ($image !== null) {
             $imageName = now()->toDateString() . '-' . uniqid() . '.' . $format;
@@ -32,34 +76,33 @@ class Helpers
                 Storage::disk('public')->makeDirectory($dir);
             }
 
-            $manager = new ImageManager(\Intervention\Image\Drivers\Gd\Driver::class); // ✅ FIXED
-            $img = $manager->read($image->getPathname());
-
-            $quality = 90;
+            // Store image temporarily
             $tempPath = storage_path('app/temp_' . uniqid() . '.' . $format);
-            $targetSize = $targetSizeKB * 1024;
+            file_put_contents($tempPath, file_get_contents($image));
 
-            do {
-                $img->toJpeg(quality: $quality)->save($tempPath);
-                $currentSize = filesize($tempPath);
-                $quality -= 5;
-            } while ($currentSize > $targetSize && $quality > 10);
+            // Optimize using Spatie
+            $optimizerChain = OptimizerChainFactory::create();
+            $optimizerChain->optimize($tempPath); // This will compress in-place
 
+            // Check size after optimization
+            //$finalSize = filesize($tempPath) / 1024;
+
+            // Store optimized image in public storage
             $finalContents = file_get_contents($tempPath);
             Storage::disk('public')->put($dir . $imageName, $finalContents);
-            unlink($tempPath);
+            unlink($tempPath); // Clean up temp file
 
             return $imageName;
         }
 
         return null;
     }
-    public static function update(string $dir, $old_image, string $format, $image = null)
+    public static function updateWithCompress(string $dir, $old_image, string $format, $image = null)
     {
         if (Storage::disk('public')->exists($dir . $old_image)) {
             Storage::disk('public')->delete($dir . $old_image);
         }
-        $imageName = Helpers::uploadWithCompress($dir, $format, $image);
+        $imageName = Helpers::uploadWithCompress($dir, $format, $image, 300);
         return $imageName;
     }
     public static function delete($full_path)
@@ -830,7 +873,8 @@ if (!function_exists('currency_symbol')) {
 if (!function_exists('format_price')) {
     function format_price($price)
     {
-        return number_format($price, 2) . currency_symbol();
+        //return number_format($price, 2) . currency_symbol();
+        return number_format($price, 2);
     }
 }
 

@@ -52,8 +52,8 @@
                                             {{ \App\CPU\Helpers::currency_converter(($cartItem['price'] - $cartItem['discount']) * $cartItem['quantity']) }}
                                         </td>
                                         <td class="remove-col"><a href="javascript:voide(0);"
-                                                onclick="removeFromCart({{ $key }})"
-                                                class="btn-remove"><i class="fa fa-trash-o"></i></a></td>
+                                                onclick="removeFromCart({{ $key }})" class="btn-remove"><i
+                                                    class="fa fa-trash-o"></i></a></td>
                                     </tr>
                                 @endforeach
                             @else
@@ -71,7 +71,7 @@
                         <h4>Shipping Address</h4>
                     </div>
                     <div class="card-body">
-                        <form action="{{ route('customer.product.checkout.order')}}" method="POST">
+                        <form action="{{ route('customer.product.checkout.order') }}" method="POST">
                             @csrf
                             <div class="row">
                                 <div class="col-md-6">
@@ -82,7 +82,7 @@
                                         @foreach (\App\Model\ShippingMethod::where(['status' => 1])->get() as $shipping)
                                             <option value="{{ $shipping['id'] }}"
                                                 {{ session()->has('shipping_method_id') ? (session('shipping_method_id') == $shipping['id'] ? 'selected' : '') : '' }}>
-                                                {{ $shipping['title'] . ' ( ' . $shipping['duration'] . ' ) ' . \App\CPU\Helpers::currency_converter($shipping['cost']) }}
+                                                {{ $shipping['title'] . ' ' . \App\CPU\Helpers::currency_converter($shipping['cost']) }}
                                             </option>
                                         @endforeach
                                     </select>
@@ -99,48 +99,50 @@
                                 <div class="col-md-6 mb-3">
                                     <div class="form-group">
                                         <label>Name <span class="text-danger">*</span></label>
-                                        <input type="text" class="form-control"
-                                            placeholder="Enter your name" name="name" value="{{ old('name')}}">
-                                            @error('name')
-                                            <span class="text-danger">{{$message}}</span>
-                                            @enderror
+                                        <input type="text" class="form-control" placeholder="Enter your name"
+                                            name="name" value="{{ old('name') }}">
+                                        @error('name')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
                                     </div>
                                 </div>
                                 <div class="col-md-6 mb-3">
                                     <div class="form-group">
-                                        <label>Phone <span class="text-danger">*</span></label>
-                                        <input type="text" class="form-control"
-                                            placeholder="Enter your phone" name="phone" value="{{ old('phone')}}">
-                                            @error('phone')
-                                            <span class="text-danger">{{$message}}</span>
-                                            @enderror
+                                        <label for="phone">@lang('Phone Number') <span
+                                                class="text-danger">*</span></label>
+                                        <input type="number" class="form-control" id="phone" name="phone"
+                                            placeholder="@lang('Enter your phone number')" required value="{{ old('phone') }}">
+                                        <span id="phoneFeedback" class="small text-danger"></span>
+                                        @error('phone')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
                                     </div>
                                 </div>
                                 <div class="col-md-12 mb-3">
                                     <div class="form-group">
                                         <label>Email </label>
-                                        <input type="email" class="form-control"
-                                            placeholder="Enter your email" name="email" value="{{ old('email')}}">
-                                            @error('email')
-                                            <span class="text-danger">{{$message}}</span>
-                                            @enderror
+                                        <input type="email" class="form-control" placeholder="Enter your email"
+                                            name="email" value="{{ old('email') }}">
+                                        @error('email')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
                                     </div>
                                 </div>
 
                                 <div class="col-md-12 mb-3">
                                     <div class="form-group">
                                         <label>Shipping Address <span class="text-danger">*</span></label>
-                                        <textarea class="form-control" placeholder="Enter your shipping address" name="address">{{old('address')}}</textarea>
+                                        <textarea class="form-control" placeholder="Enter your shipping address" name="address">{{ old('address') }}</textarea>
                                         @error('address')
-                                            <span class="text-danger">{{$message}}</span>
-                                            @enderror
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
                                     </div>
                                     <div class="form-group">
                                         <label>Note </label>
-                                        <textarea class="form-control" placeholder="Enter your Note" name="order_note">{{old('order_note')}}</textarea>
+                                        <textarea class="form-control" placeholder="Enter your Note" name="order_note">{{ old('order_note') }}</textarea>
                                         @error('order_note')
-                                            <span class="text-danger">{{$message}}</span>
-                                            @enderror
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
                                     </div>
                                 </div>
                             </div>
@@ -161,29 +163,28 @@
 
 
 <script>
-
     function set_shipping_id(id) {
-        @foreach(session()->get('cart') as $key => $item)
-        let key = '{{$key}}';
-        @break
+        @foreach (session()->get('cart') as $key => $item)
+            let key = '{{ $key }}';
+            @break
         @endforeach
         $.get({
-            url: '{{url('/')}}/customer/set-shipping-method',
+            url: '{{ url('/') }}/customer/set-shipping-method',
             dataType: 'json',
             data: {
                 id: id,
                 key: key
             },
-            beforeSend: function () {
+            beforeSend: function() {
                 $('#loading').show();
             },
-            success: function (data) {
+            success: function(data) {
                 if (data.status == 1) {
                     toastr.success('Shipping method selected', {
                         CloseButton: true,
                         ProgressBar: true
                     });
-                    setInterval(function () {
+                    setInterval(function() {
                         location.reload();
                     }, 2000);
                 } else {
@@ -193,7 +194,7 @@
                     });
                 }
             },
-            complete: function () {
+            complete: function() {
                 $('#loading').hide();
             },
         });

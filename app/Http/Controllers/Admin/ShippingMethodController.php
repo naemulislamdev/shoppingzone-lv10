@@ -25,7 +25,7 @@ class ShippingMethodController extends Controller
     {
         $request->validate([
             'title'    => 'required|max:200',
-            'duration' => 'required',
+            'duration' => 'nullable',
             'cost'     => 'numeric',
         ]);
 
@@ -67,7 +67,7 @@ class ShippingMethodController extends Controller
     {
         $request->validate([
             'title'    => 'required|max:200',
-            'duration' => 'required',
+            'duration' => 'nullable',
             'cost'     => 'numeric',
         ]);
 
@@ -91,7 +91,7 @@ class ShippingMethodController extends Controller
         $shipping_methods = ShippingMethod::where(['creator_type' => 'admin'])->get();
         $all_category_ids = Category::where(['position' => 0])->pluck('id')->toArray();
         $category_shipping_cost_ids = CategoryShippingCost::where('seller_id',0)->pluck('category_id')->toArray();
-        
+
         foreach($all_category_ids as $id)
         {
             if(!in_array($id,$category_shipping_cost_ids))

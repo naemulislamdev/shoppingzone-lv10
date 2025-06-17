@@ -123,4 +123,35 @@ class ReviewsController extends Controller
         Toastr::success('Review status updated!');
         return back();
     }
+    //create a product review
+    public function createProductReviewForm()
+    {
+        $products = Product::whereNotIn('request_status',[0])->select('id', 'name', 'code')->get();
+        $customers = User::whereNotIn('id',[0])->select('id', 'name', 'f_name', 'l_name')->get();
+        return view('admin-views.reviews.create_product_review', compact('products', 'customers'));
+    }
+    public function createProductReview(Request $request)
+    {
+        $review = new Review();
+        $review->product_id = $request->product_id;
+        $review->customer_name = $request->customer_name;
+        $review->attachment ='[]';
+        $review->rating = $request->rating;
+        $review->comment = $request->comment;
+        $review->status = 1; // Default status set to 1 (active)
+        $review->save();
+
+        Toastr::success('Review created successfully!');
+        return back();
+    }
+    public function deleteProductReview(Request $request)
+    {
+        $review = Review::find($request->id);
+        if (!$review) {
+            return response()->json(['message' => 'Review not found!'], 404);
+        }
+        // Delete the review
+        $review->delete();
+        return response()->json(['message' => 'Review deleted successfully!']);
+    }
 }

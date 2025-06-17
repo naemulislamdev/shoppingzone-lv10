@@ -4,8 +4,7 @@
             <div class="col-md-2">
                 <!-- <a class="navbar-brand" href="index.html">Shopping Zone BD</a> -->
                 <a href="{{ route('home') }}">
-                    <img class="header-logo"
-                        src="{{ asset('storage/company') . '/' . $web_config['web_logo']->value }}"
+                    <img class="header-logo" src="{{ asset('storage/company') . '/' . $web_config['web_logo']->value }}"
                         onerror="this.src='{{ asset('assets/front-end/img/image-place-holder.png') }}'"
                         alt="{{ $web_config['name']->value }}">
                 </a>
@@ -15,9 +14,10 @@
                 <nav class="navbar">
                     <div class="menu-area">
                         <ul>
-                            <li><a href="{{ route('home') }}">{{\App\CPU\translate('Home')}}</a></li>
+                            <li><a href="{{ route('home') }}">{{ \App\CPU\translate('Home') }}</a></li>
 
-                            <li class="dd-btn1"><a href="#">{{\App\CPU\translate('Categories')}}  <i class="fa fa-angle-down"></i></a>
+                            <li class="dd-btn1"><a href="#">{{ \App\CPU\translate('Categories') }} <i
+                                        class="fa fa-angle-down"></i></a>
                                 <div class="dropdown-menu1">
                                     <div class="row">
                                         @foreach ($categories as $category)
@@ -58,28 +58,33 @@
                                     </div>
                                 </div>
                             </li>
-                            <li><a href="{{ route('shop') }}">{{\App\CPU\translate('Shop')}}</a>
+                            <li><a href="{{ route('shop') }}">{{ \App\CPU\translate('Shop') }}</a>
                             </li>
-                            <li><a href="{{ route('video_shopping') }}">{{\App\CPU\translate('video shopping')}}</a>
+                            <li><a href="{{ route('video_shopping') }}">{{ \App\CPU\translate('video shopping') }}</a>
                             </li>
                             {{-- <li><a href="{{ route('campain') }}">{{\App\CPU\translate('Campaign')}}</i></a> --}}
-                                <li class="dd-btn1"><a href="#">{{\App\CPU\translate('Offer')}} <i class="fa fa-angle-down"></i></a>
-                                    @php($landingPages = \App\Model\LandingPages::where('status',1)->get())
-                                    <div class="dropdown-menu1 offer-dropdown">
-                                        <ul>
-                                            <li>
-                                                <a href="{{ route('campain') }}">{{\App\CPU\translate('Campaign')}}</i></a>
+                            <li class="dd-btn1"><a href="#">{{ \App\CPU\translate('Offer') }} <i
+                                        class="fa fa-angle-down"></i></a>
+                                @php($landingPages = \App\Model\LandingPages::where('status', 1)->get())
+                                <div class="dropdown-menu1 offer-dropdown">
+                                    <ul>
+                                        <li>
+                                            <a
+                                                href="{{ route('campain') }}">{{ \App\CPU\translate('Campaign') }}</i></a>
+                                        </li>
+                                        @foreach ($landingPages as $landingPage)
+                                            <li><a
+                                                    href="{{ route('landing_page', $landingPage->slug) }}">{{ $landingPage->title }}</i></a>
                                             </li>
-                                            @foreach ($landingPages as $landingPage)
-                                            <li><a href="{{ route('landing_page',$landingPage->slug) }}">{{$landingPage->title}}</i></a></li>
-                                            @endforeach
-                                        </ul>
-                                    </div>
-                                </li>
-
-                            <li><a href="{{ route('selling.product') }}">{{\App\CPU\translate('Selling product')}}</a>
+                                        @endforeach
+                                    </ul>
+                                </div>
                             </li>
-                            <li><a href="{{ route('outlets') }}">{{\App\CPU\translate('Our outlets')}}</a></li>
+
+                            <li><a
+                                    href="{{ route('selling.product') }}">{{ \App\CPU\translate('Selling product') }}</a>
+                            </li>
+                            <li><a href="{{ route('outlets') }}">{{ \App\CPU\translate('Our outlets') }}</a></li>
                         </ul>
                     </div>
 
@@ -98,6 +103,11 @@
                             aria-hidden="true"></i><span class="badge badge-danger" id="total_cart_count">
                             {{ session()->has('cart') ? count(session()->get('cart')) : 0 }}
                         </span></a>
+                    @if (auth('customer')->check())
+                        <a href="{{ route('user-account') }}" class="d-lg-none"><i class="fa fa-user" aria-hidden="true"></i></a>
+                    @else
+                        <a href="{{ route('customer.auth.login') }}" class="d-lg-none"><i class="fa fa-user" aria-hidden="true"></i></a>
+                    @endif
                 </div>
             </div>
         </div>
@@ -125,13 +135,15 @@ $company_mobile_logo = \App\Model\BusinessSetting::where('type', 'company_mobile
         <div class="accordion" id="accordionExample">
             <div class="menu-box">
                 <div class="menu-link">
-                    <a href="{{ route('home') }}"><i class="fa fa-ptab3 mr-2"></i>{{\App\CPU\translate('Home')}}</a>
+                    <a href="{{ route('home') }}"><i class="fa fa-ptab3 mr-2"></i>{{ \App\CPU\translate('Home') }}</a>
                 </div>
             </div>
             <div class="menu-box">
                 <div class="menu-link" id="headingOne">
                     <a class="mmenu-btn menu-link-active" type="button" data-toggle="collapse"
-                        data-target="#categories" aria-expanded="true"><i class="fa fa-ptab3 mr-2"></i>{{\App\CPU\translate('Categories')}}<i class="fa fa-plus"></i></a>
+                        data-target="#categories" aria-expanded="true"><i
+                            class="fa fa-ptab3 mr-2"></i>{{ \App\CPU\translate('Categories') }}<i
+                            class="fa fa-plus"></i></a>
                 </div>
                 <div id="categories" class="menu-body collapse" aria-labelledby="headingOne"
                     data-parent="#accordionExample">
@@ -186,28 +198,34 @@ $company_mobile_logo = \App\Model\BusinessSetting::where('type', 'company_mobile
             </div>
             <div class="menu-box">
                 <div class="menu-link">
-                    <a href="{{ route('shop') }}"><i class="fa fa-ptab3 mr-2"></i> {{\App\CPU\translate('Shop')}}</a>
+                    <a href="{{ route('shop') }}"><i class="fa fa-ptab3 mr-2"></i>
+                        {{ \App\CPU\translate('Shop') }}</a>
                 </div>
             </div>
             <div class="menu-box">
                 <div class="menu-link">
-     <a href="{{ route('video_shopping') }}"><i class="fa fa-ptab3 mr-2"></i> {{\App\CPU\translate('Video Shopping')}}</a>
+                    <a href="{{ route('video_shopping') }}"><i class="fa fa-ptab3 mr-2"></i>
+                        {{ \App\CPU\translate('Video Shopping') }}</a>
                 </div>
             </div>
             <div class="menu-box">
                 <div class="menu-link" id="headingTwo">
                     <a class="mmenu-btn menu-link-active" type="button" data-toggle="collapse"
-                        data-target="#offers" aria-expanded="true"><i class="fa fa-ptab3 mr-2"></i>{{\App\CPU\translate('Offer')}}<i class="fa fa-plus"></i></a>
+                        data-target="#offers" aria-expanded="true"><i
+                            class="fa fa-ptab3 mr-2"></i>{{ \App\CPU\translate('Offer') }}<i
+                            class="fa fa-plus"></i></a>
                 </div>
                 <div id="offers" class="menu-body collapse" aria-labelledby="headingTwo"
                     data-parent="#accordionExample">
                     <div class="card-body">
                         <ul>
                             <li>
-                                <a href="{{ route('campain') }}"><i class="fa fa-ptab3 mr-2"></i>{{\App\CPU\translate('Campaign')}}</i></a>
+                                <a href="{{ route('campain') }}"><i
+                                        class="fa fa-ptab3 mr-2"></i>{{ \App\CPU\translate('Campaign') }}</i></a>
                             </li>
                             @foreach ($landingPages as $landingPage)
-                            <li><a href="{{ route('landing_page',$landingPage->slug) }}"><i class="fa fa-ptab3 mr-2"></i>{{$landingPage->title}}</i></a></li>
+                                <li><a href="{{ route('landing_page', $landingPage->slug) }}"><i
+                                            class="fa fa-ptab3 mr-2"></i>{{ $landingPage->title }}</i></a></li>
                             @endforeach
                         </ul>
                     </div>
@@ -215,12 +233,25 @@ $company_mobile_logo = \App\Model\BusinessSetting::where('type', 'company_mobile
             </div>
             <div class="menu-box">
                 <div class="menu-link">
-                    <a href="{{ route('selling.product') }}"><i class="fa fa-ptab3 mr-2"></i>{{\App\CPU\translate('Selling Product')}}</a>
+                    <a href="{{ route('selling.product') }}"><i
+                            class="fa fa-ptab3 mr-2"></i>{{ \App\CPU\translate('Selling Product') }}</a>
                 </div>
             </div>
             <div class="menu-box">
                 <div class="menu-link">
-                    <a href="{{ route('outlets') }}"><i class="fa fa-ptab3 mr-2"></i>{{\App\CPU\translate('Our outlets')}}</a>
+                    <a href="{{ route('outlets') }}"><i
+                            class="fa fa-ptab3 mr-2"></i>{{ \App\CPU\translate('Our outlets') }}</a>
+                </div>
+            </div>
+            <div class="menu-box mt-2 text-white">
+                <div class="menu-link">
+                    @if (auth('customer')->check())
+                        <a href="{{ route('user-account') }}" class="btn btn-primary"><i class="fa fa-ptab3 mr-2"></i>
+                            {{ \App\CPU\translate('User Dashboard') }}</a>
+                            @else
+                        <a href="{{ route('customer.auth.login') }}" class="btn btn-primary"><i
+                                class="fa fa-ptab3 mr-2"></i>{{ \App\CPU\translate('Login') }}</a>
+                    @endif
                 </div>
             </div>
         </div>

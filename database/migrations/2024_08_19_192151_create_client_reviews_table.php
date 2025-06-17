@@ -16,6 +16,7 @@ class CreateClientReviewsTable extends Migration
         Schema::create('client_reviews', function (Blueprint $table) {
             $table->id();
             $table->string('name')->nullable();
+            $table->string('gender')->nullable();
             $table->text('comment')->nullable();
             $table->string('ratings')->nullable();
             $table->boolean('status')->default(false);

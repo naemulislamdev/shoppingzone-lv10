@@ -135,6 +135,18 @@
                         @enderror
                     </div>
                     <div class="form-group">
+                        <label>Your Gender <span class="text-danger">*</span></label>
+                        <select name="client_gender" class="form-control">
+                            <option selected disabled>Select your gender</option>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                            <option value="other">Other</option>
+                        </select>
+                        @error('client_gender')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
+                    <div class="form-group">
                         <label>Your Comment <span class="text-danger">*</span></label>
                         <textarea name="client_comment" class="form-control" placeholder="Enter your comment"></textarea>
                         @error('client_comment')

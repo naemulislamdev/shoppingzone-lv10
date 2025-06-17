@@ -211,7 +211,7 @@ class SystemController extends Controller
             'name' => 'required|string',
             'email' => 'nullable|email',
             'address' => 'required|string',
-            'phone' => 'required|string',
+            'phone' => 'required|regex:/^(01[3-9]\d{8})$/',
             'shipping_method_id' => 'required',
             'payment_method' => 'required|in:cash_on_delivery,online_payment'
         ]);
@@ -365,12 +365,12 @@ class SystemController extends Controller
     }
     public function singlepCheckout(Request $request)
     {
-         //$request->dd();
+        //$request->dd();
         $this->validate($request, [
             'name' => 'required|string|max:150',
             'email' => 'nullable|email',
             'address' => 'required|string|max:255',
-            'phone' => 'required|string|max:11|min:11',
+            'phone' => 'required|regex:/^(01[3-9]\d{8})$/',
             'order_note' => 'nullable|string|max:200',
             'shipping_method' => 'required',
         ]);
@@ -413,11 +413,21 @@ class SystemController extends Controller
             ///order table code
             $coupon_code = 0;
             $price = $request->price;
+            //dd($price);
             $quantity = $request->quantity;
             $tax = $request->tax ?? 0;
             $discount = $request->discount ?? 0;
+            if ($discount > 0) {
+                if ($product->discount_type == 'flat') {
+                    $discount = $request->discount;
+                } else {
+                    $discount = ($price / 100) * $request->discount;
+                }
+            }
 
-            $granTotal = ($price * $quantity) + ($tax * $quantity) - ($discount * $quantity);
+            $f_discount = $discount * $quantity;
+
+            $granTotal = ($price * $quantity) + ($tax * $quantity) - $f_discount;
 
             $or = [
                 'id' => 100000 + Order::all()->count() + 1,
@@ -432,7 +442,7 @@ class SystemController extends Controller
                 'coupon_code' => $coupon_code,
                 'discount_amount' => $discount,
                 'discount_type' => $discount == 0 ? null : 'coupon_discount',
-                'order_amount' => $granTotal - $discount,
+                'order_amount' => $granTotal,
                 'shipping_address' => $shippingAddress->id,
                 'shipping_address_data' => ShippingAddress::find($shippingAddress->id),
                 'shipping_method_id' => $request->shipping_method,

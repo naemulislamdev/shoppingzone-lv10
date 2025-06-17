@@ -22,8 +22,8 @@ class ProductRequest extends FormRequest
      */
     public function rules(): array
     {
-            $images = 'required';
-            $image = 'required';
+            $images = 'required|max:3072';
+            $image = 'required|max:3072';
             $code = 'required|min:3|max:30|unique:products,code';
         if(request()->route()->id){
             $images = 'nullable';

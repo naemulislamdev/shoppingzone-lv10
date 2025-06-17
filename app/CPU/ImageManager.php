@@ -15,6 +15,7 @@ class ImageManager
             if (!Storage::disk('public')->exists($dir)) {
                 Storage::disk('public')->makeDirectory($dir);
             }
+            dd($image);
             Storage::disk('public')->put($dir . $imageName, file_get_contents($image));
         } else {
             $imageName = null;

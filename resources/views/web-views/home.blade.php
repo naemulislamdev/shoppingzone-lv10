@@ -43,7 +43,7 @@
                                 <div class="tp-category-item-3 p-relative text-center">
                                     <div class="tp-category-thumb-3">
                                         <img src="{{ asset("storage/category/$category->icon") }}"
-                                            alt="{{$category->name}}">
+                                            alt="{{ $category->name }}">
                                     </div>
                                     <div class="tp-category-content-3">
                                         <h3 class="tp-category-title-3">
@@ -130,9 +130,11 @@
                                     @endif
                                     <a href="{{ route('product', $product->slug) }}">
                                         <img class="pic-1"
-                                            src="{{ \App\CPU\ProductManager::product_image_path('thumbnail') }}/{{ $product['thumbnail'] }}" alt="{{$product['name']}}">
+                                            src="{{ \App\CPU\ProductManager::product_image_path('thumbnail') }}/{{ $product['thumbnail'] }}"
+                                            alt="{{ $product['name'] }}">
                                         <img class="pic-2"
-                                            src="{{ \App\CPU\ProductManager::product_image_path('thumbnail') }}/{{ $product['thumbnail'] }}" alt="{{$product['name']}}">
+                                            src="{{ \App\CPU\ProductManager::product_image_path('thumbnail') }}/{{ $product['thumbnail'] }}"
+                                            alt="{{ $product['name'] }}">
                                     </a>
                                     <ul class="social">
                                         <li><a href="{{ route('product', $product->slug) }}" data-tip="Quick View"><i
@@ -195,7 +197,7 @@
                                             <div class="product-modal-box d-flex align-items-center mb-3">
                                                 <div class="img mr-3">
                                                     <img src="{{ \App\CPU\ProductManager::product_image_path('thumbnail') }}/{{ $product['thumbnail'] }}"
-                                                        alt="{{$product['name']}}" style="width: 80px;">
+                                                        alt="{{ $product['name'] }}" style="width: 80px;">
                                                 </div>
                                                 <div class="p-name">
                                                     <h5 class="title">{{ Str::limit($product['name'], 23) }}</h5>
@@ -362,9 +364,11 @@
                                         @endif
                                         <a href="{{ route('product', $product->slug) }}">
                                             <img class="pic-1"
-                                                src="{{ \App\CPU\ProductManager::product_image_path('thumbnail') }}/{{ $product['thumbnail'] }}" alt="{{$product->slug}}">
+                                                src="{{ \App\CPU\ProductManager::product_image_path('thumbnail') }}/{{ $product['thumbnail'] }}"
+                                                alt="{{ $product->slug }}">
                                             <img class="pic-2"
-                                                src="{{ \App\CPU\ProductManager::product_image_path('thumbnail') }}/{{ $product['thumbnail'] }}" alt="{{$product['name']}}">
+                                                src="{{ \App\CPU\ProductManager::product_image_path('thumbnail') }}/{{ $product['thumbnail'] }}"
+                                                alt="{{ $product['name'] }}">
                                         </a>
                                         <ul class="social">
                                             <li><a href="{{ route('product', $product->slug) }}" data-tip="Quick View"><i
@@ -537,7 +541,7 @@
                             <a href="{{ $banner['url'] }}">
                                 <img onerror="this.src='{{ asset('assets/front-end/img/image-place-holder.png') }}'"
                                     src="{{ asset('storage/banner') }}/{{ $banner['photo'] }}"
-                                    alt="{{@$banner['photo']}}" width="100%;">
+                                    alt="{{ @$banner['photo'] }}" width="100%;">
                             </a>
                         </div>
                     </div>
@@ -574,9 +578,17 @@
                         @foreach ($clientReviews as $review)
                             <div class="item">
                                 <div class="customer-review-box text-center">
-                                    <img src="{{ asset('assets/front-end') }}/images/slider/customer-review/img1.jpg"
-                                        alt="">
-                                    <div class="customer-name">
+                                    @if ($review->gender == 'male')
+                                        <img src="{{ asset('assets/front-end') }}/images/slider/customer-review/smale.png"
+                                            alt="">
+                                    @elseif($review->gender == 'female')
+                                        <img src="{{ asset('assets/front-end') }}/images/slider/customer-review/sfemale.png"
+                                            alt="">
+                                    @else
+                                        <img src="{{ asset('assets/front-end') }}/images/slider/customer-review/img1.jpg"
+                                            alt="">
+                                    @endif
+                                    <div class="customer-name mt-2">
                                         <h3>{{ htmlspecialchars($review['name']) }}</h3>
                                     </div>
                                     <div class="customer-sms">

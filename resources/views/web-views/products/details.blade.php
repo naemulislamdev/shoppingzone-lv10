@@ -242,12 +242,20 @@
                             <div class="p-details">
                                 <h1 class="product-name mb-2">{{ $product->name }}</h1>
 
-                                <span class="product-price">{{ \App\CPU\Helpers::get_price_range($product) }}</span>
+                                <div>
+                                    <span class="product-price"><span>
+                                        ৳</span> {{ \App\CPU\Helpers::get_price_range($product) }}</span>
+                                </div>
 
                                 @if ($product->discount > 0)
                                     <span class="discount-price">
-                                        <del>{{ \App\CPU\Helpers::currency_converter($product->unit_price) }} </del> -
-                                        {{ $product->discount }}%</span>
+                                        <del>৳ {{ \App\CPU\Helpers::currency_converter($product->unit_price) }} </del> -
+                                        @if ($product->discount_type == 'percent')
+                                            {{ round($product->discount, $decimal_point_settings) }}%
+                                        @elseif($product->discount_type == 'flat')
+                                           {{ \App\CPU\Helpers::currency_converter($product->discount) }}
+                                        @endif
+                                    </span>
                                 @endif
                                 <div class="my-2">
                                     <span class="product-code"><strong>Code:</strong> {{ $product->code }}</span>

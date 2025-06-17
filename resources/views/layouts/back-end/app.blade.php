@@ -519,6 +519,29 @@
             return Math.floor(Math.random() * 90000) + 100000;
         }
     </script>
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const container = document.querySelector('.navbar-vertical-content');
+        const activeItem = container.querySelector('.nav-item.active');
+        const activeItemAside = container.querySelector('.navbar-vertical-aside-has-menu.active');
+
+        if (activeItem) {
+            activeItem.scrollIntoView({
+                behavior: 'smooth',
+                block: 'center', // or 'start' for top
+                inline: 'nearest'
+            });
+        }
+
+        if (activeItemAside) {
+            activeItemAside.scrollIntoView({
+                behavior: 'smooth',
+                block: 'center', // or 'start' for top
+                inline: 'nearest'
+            });
+        }
+    });
+</script>
 </body>
 
 </html>

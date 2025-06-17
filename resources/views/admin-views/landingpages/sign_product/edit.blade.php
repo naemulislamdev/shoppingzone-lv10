@@ -6,6 +6,76 @@
     <link href="{{ asset('assets/back-end/css/tags-input.min.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/select2/css/select2.min.css') }}" rel="stylesheet">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <style>
+        .upload-container {
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .custom-file-input {
+            display: none;
+            /* Hide the actual file input */
+        }
+
+        .custom-file-label {
+            display: inline-block;
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .custom-file-label:hover {
+            background-color: #0056b3;
+        }
+
+        .image-preview-container {
+            display: flex;
+            flex-wrap: wrap;
+            margin-top: 20px;
+            justify-content: center;
+        }
+
+        .preview-item {
+            position: relative;
+            margin: 10px;
+            width: 120px;
+            height: 120px;
+        }
+
+        .preview-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .remove-icon {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: rgba(255, 0, 0, 0.8);
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            font-size: 14px;
+            line-height: 22px;
+            text-align: center;
+            transition: background 0.3s ease;
+        }
+
+        .remove-icon:hover {
+            background: rgba(255, 0, 0, 1);
+        }
+    </style>
 @endpush
 
 @section('content')
@@ -58,29 +128,52 @@
                                 </div>
 
                                 <div class="row mt-2">
-                                    <div class="col-md-12">
-                                        <div class="p-2 border border-dashed" style="max-width:430px;">
-                                            <div class="row" id="multiBannerImage">
-                                                @foreach (json_decode($productLandingpage->slider_img) as $key => $photo)
-                                                    <div class="col-6">
-                                                        <div class="card">
-                                                            <div class="card-body">
-                                                                <img style="width: 100%" height="auto"
-                                                                    onerror="this.src='{{ asset('assets/front-end/img/image-place-holder.png') }}'"
-                                                                    src="{{ asset("storage/landingpage/slider/$photo") }}"
-                                                                    alt="Product image">
-                                                                <a href="{{ route('admin.landingpages.remove_image', ['id' => $productLandingpage->id, 'name' => $photo]) }}"
-                                                                    class="btn btn-danger btn-block">{{ \App\CPU\translate('Remove') }}</a>
-
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                @endforeach
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>{{ \App\CPU\translate('Upload product images') }}</label><small
+                                                style="color: red">* ( {{ \App\CPU\translate('ratio') }} 1:1 )</small>
+                                        </div>
+                                        <div class="upload-container">
+                                            <input type="file" id="image-upload" name="images[]" multiple
+                                                accept="image/*" class="custom-file-input">
+                                            <label for="image-upload" class="custom-file-label">Select Product
+                                                Images</label>
+                                            <div id="image-preview" class="image-preview-container">
                                             </div>
                                         </div>
-                                        @error('images')
-                                            <span class="text-danger">{{ $message }}</span>
-                                        @enderror
+                                        <div class="exsit-image-container">
+                                            <div class="row">
+                                                @if ($productLandingpage->slider_img)
+                                                    @foreach (json_decode($productLandingpage->slider_img) as $key => $photo)
+                                                        <div class="col-md-6 mb-2">
+                                                            <div class="card">
+                                                                <div class="card-body">
+
+                                                                    <img style="width: 100%" height="auto"
+                                                                        onerror="this.src='{{ asset('assets/front-end/img/image-place-holder.png') }}'"
+                                                                        src="{{ asset("storage/landingpage/slider/$photo") }}"
+                                                                        alt="Product image">
+                                                                    <input type="text" disabled
+                                                                        value="{{ asset("storage/landingpage/slider/$photo") }}"
+                                                                        id="image-{{ $key }}">
+
+                                                                    <div class="d-flex">
+                                                                        <a href="{{ route('admin.landingpages.remove_image', ['id' => $productLandingpage->id, 'name' => $photo]) }}"
+                                                                            class="btn btn-danger btn-xs m-1">{{ \App\CPU\translate('Remove') }}</a>
+
+                                                                        <a class="btn btn-info btn-xs m-1"
+                                                                            href="javascript:void(0);"
+                                                                            onclick="copyImageUrl({{ $key }});">Copy
+                                                                            URL</a>
+                                                                    </div>
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    @endforeach
+                                                @endif
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -358,39 +451,48 @@
         });
     </script>
     <script>
-        $("#multiBannerImage").spartanMultiImagePicker({
-            fieldName: 'images[]',
-            maxCount: 10,
-            rowHeight: 'auto',
-            groupClassName: 'col-6',
-            maxFileSize: '',
-            placeholderImage: {
-                image: '{{ asset('assets/back-end/img/400x400/img2.jpg') }}',
-                width: '100%',
-            },
-            dropFileLabel: "Drop Here",
-            onAddRow: function(index, file) {
+        $(document).ready(function() {
+            const previewContainer = $("#image-preview");
+            $("#image-upload").on("change", function(event) {
+                previewContainer.empty(); // Clear existing previews
+                const files = event.target.files;
 
-            },
-            onRenderedPreview: function(index) {
-
-            },
-            onRemoveRow: function(index) {
-
-            },
-            onExtensionErr: function(index, file) {
-                toastr.error(
-                    '{{ \App\CPU\translate('Please only input png or jpg type file') }}', {
-                        CloseButton: true,
-                        ProgressBar: true
+                if (files) {
+                    $.each(files, function(index, file) {
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            const previewItem = $(`
+                             <div class="preview-item">
+                                 <img src="${e.target.result}" class="preview-image">
+                                 <button type="button" class="remove-icon" data-index="${index}">&#10005;</button>
+                             </div>
+                         `);
+                            previewContainer.append(previewItem);
+                        };
+                        reader.readAsDataURL(file);
                     });
-            },
-            onSizeErr: function(index, file) {
-                toastr.error('{{ \App\CPU\translate('File size too big') }}', {
-                    CloseButton: true,
-                    ProgressBar: true
-                });
-            }
+                }
+            });
+
+            // Handle image removal
+            previewContainer.on("click", ".remove-icon", function() {
+                const indexToRemove = $(this).data("index");
+                $(this).parent().remove();
+                // Remove the corresponding file from the input (file list cannot be modified directly, so create a new list)
+                const input = document.getElementById("image-upload");
+                const dataTransfer = new DataTransfer();
+                const files = input.files;
+
+                // Add all files except the one to be removed
+                for (let i = 0; i < files.length; i++) {
+                    if (i !== indexToRemove) {
+                        dataTransfer.items.add(files[i]);
+                    }
+                }
+
+                // Update the input files
+                input.files = dataTransfer.files;
+            });
         });
     </script>
     <script>

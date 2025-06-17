@@ -11,8 +11,27 @@
     <meta property="twitter:title" content="Welcome To {{ $web_config['name']->value }} Home" />
     <meta property="twitter:url" content="{{ env('APP_URL') }}">
     <meta property="twitter:description" content="{!! substr($web_config['about']->value, 0, 100) !!}">
+    {{-- <link rel="stylesheet" href="{{ asset('assets/front-end/css/bangla-font.css') }}"> --}}
+    <link href="https://fonts.maateen.me/solaiman-lipi/font.css" rel="stylesheet">
     <style>
-        /* Custom CSS */
+        /*---End Bangla fonts*/
+        body {
+            font-family: 'SolaimanLipi', sans-serif !important;
+        }
+
+        p,
+        span,
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        label {
+            font-family: 'SolaimanLipi', sans-serif !important;
+            font-weight: 400
+        }
+
         .product-image {
             width: 100%;
             max-width: 300px;
@@ -46,6 +65,7 @@
             font-weight: 700;
             font-size: 20px;
             transition: 0.3s;
+            font-family: 'SolaimanLipi', sans-serif !important;
         }
 
         .order-btn:hover {
@@ -73,12 +93,15 @@
         .section-title>h4 {
             color: #fff;
             font-size: 30px;
+            font-family: 'SolaimanLipi', sans-serif !important;
         }
 
         .name-price {
-            background: #f4f4f4;
+            background: #fffdfd;
             padding: 11px 13px;
             border-radius: 7px;
+            border: 2px dashed #f26d21;
+            box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
         }
 
         .name-price>.title-box {
@@ -104,6 +127,7 @@
         .p-dtls-box>table>tbody>tr {
             display: flex;
             justify-content: space-between;
+            border: 1px solid #ddd;
         }
 
         .p-type-box {
@@ -168,10 +192,38 @@
             left: 50%;
             transform: translate(-50%, -50%);
         }
+
+        .sp-price {
+            font-size: 20px;
+            font-weight: 600;
+            color: #f26d21;
+            font-family: 'Jost';
+        }
+
+        .discount-price {
+            font-size: 16px;
+            font-weight: 600;
+            color: #909090;
+            font-family: 'Jost';
+        }
+
+        .table td,
+        .table th {
+            font-family: 'Jost', sans-serif !important;
+        }
+
+        .shipping-title {
+            font-size: 16px;
+            font-weight: 700;
+            font-family: 'Jost' !important;
+        }
     </style>
 @endpush
 @section('content')
     <!-- Header Section -->
+    @php
+        $decimal_point_settings = \App\CPU\Helpers::get_business_settings('decimal_point_settings');
+    @endphp
     <section>
         <div class="container">
             <div class="row">
@@ -279,23 +331,19 @@
     @endphp
 
     <!-- Video Section -->
-<div class="container video-section">
-    <div class="row justify-content-center">
-        <div class="col-md-{{$col}}"> <!-- Adjust column width if needed -->
-            <div style="position: relative; width: {{ $width }}; height: {{ $height }}px;">
-                <iframe
-                    style="width: 100%; height: 100%;"
-                    src="{{ $embedUrl }}"
-                    title="Video Player"
-                    frameborder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    referrerpolicy="strict-origin-when-cross-origin"
-                    allowfullscreen>
-                </iframe>
+    <div class="container video-section">
+        <div class="row justify-content-center">
+            <div class="col-md-{{ $col }}"> <!-- Adjust column width if needed -->
+                <div style="position: relative; width: {{ $width }}; height: {{ $height }}px;">
+                    <iframe style="width: 100%; height: 100%;" src="{{ $embedUrl }}" title="Video Player"
+                        frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
+                    </iframe>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
 
     <!-- Benefit Section -->
@@ -304,7 +352,7 @@
             <div class="row">
                 <div class="col">
                     <div class="section-title">
-                        <h4 class="text-center">এই পণ্যের বৈশিষ্ট্য</h4>
+                        <h4 class="text-center" style="font-family: 'SolaimanLipi', sans-serif;">এই পণ্যের বৈশিষ্ট্য</h4>
                     </div>
                 </div>
             </div>
@@ -433,10 +481,12 @@
                                                     </div>
                                                     <div class="col-md-6 mb-3">
                                                         <div class="form-group">
-                                                            <label>Phone <span class="text-danger">*</span></label>
-                                                            <input type="text" class="form-control"
-                                                                placeholder="Enter your phone" name="phone"
+                                                            <label for="phone">@lang('Phone Number') <span
+                                                                    class="text-danger">*</span></label>
+                                                            <input type="number" class="form-control" id="phone"
+                                                                name="phone" placeholder="@lang('Enter your phone number')" required
                                                                 value="{{ old('phone') }}">
+                                                            <span id="phoneFeedback" class="small text-danger"></span>
                                                             @error('phone')
                                                                 <span class="text-danger">{{ $message }}</span>
                                                             @enderror
@@ -509,8 +559,22 @@
                                                                     <p class="m-0">
                                                                         {{ $productLandingPage->product->name }} <i
                                                                             class="fa fa-close"></i> 1</p>
-                                                                    <p>{{ \App\CPU\Helpers::currency_converter($productLandingPage->product->unit_price) }}
-                                                                    </p>
+                                                                    <div>
+                                                                        <span class="sp-price">৳
+                                                                            {{ \App\CPU\Helpers::get_price_range($productLandingPage->product) }}</span>
+                                                                    </div>
+                                                                    @if ($productLandingPage->product->discount > 0)
+                                                                        <span class="discount-price">
+                                                                            <del>৳
+                                                                                {{ \App\CPU\Helpers::currency_converter($productLandingPage->product->unit_price) }}
+                                                                            </del> -
+                                                                            @if ($productLandingPage->product->discount_type == 'percent')
+                                                                                {{ round($productLandingPage->product->discount, $decimal_point_settings) }}%
+                                                                            @elseif($productLandingPage->product->discount_type == 'flat')
+                                                                                {{ \App\CPU\Helpers::currency_converter($productLandingPage->product->discount) }}
+                                                                            @endif
+                                                                        </span>
+                                                                    @endif
                                                                 </div>
                                                             </div>
                                                             <div class="p-variant">
@@ -600,12 +664,14 @@
                                                                     <tr>
                                                                         <th>Subtotal :</th>
                                                                         <td id="subtotal">
-                                                                            {{ \App\CPU\Helpers::currency_converter($productLandingPage->product->unit_price) }}
+                                                                            {{ \App\CPU\Helpers::get_price_range($productLandingPage->product) }}
+                                                                            <span>৳</span>
                                                                         </td>
                                                                     </tr>
                                                                     <tr>
-                                                                        <th>Shipping :</th>
+
                                                                         <td>
+                                                                            <h5 class="shipping-title">Shipping :</h5>
                                                                             <ul class="p-0 m-0">
                                                                                 @foreach (\App\Model\ShippingMethod::where(['status' => 1])->get() as $shipping)
                                                                                     <li style="list-style: none;">
@@ -619,7 +685,7 @@
                                                                                                 value="{{ $shipping['id'] }}" />
                                                                                             <label class="form-check-label"
                                                                                                 for="shipping_{{ $shipping['id'] }}">
-                                                                                                {{ $shipping['title'] . ' ( ' . $shipping['duration'] . ' ) ' . \App\CPU\Helpers::currency_converter($shipping['cost']) }}
+                                                                                                {{ $shipping['title'] . ' ' . \App\CPU\Helpers::currency_converter($shipping['cost']) }}
                                                                                             </label>
                                                                                         </div>
                                                                                     </li>
@@ -631,7 +697,9 @@
                                                                         <th>Total:</th>
                                                                         <td>
                                                                             <span
-                                                                                id="total">{{ \App\CPU\Helpers::currency_converter($productLandingPage->product->unit_price) }}</span>
+                                                                                id="total">{{ \App\CPU\Helpers::get_price_range($productLandingPage->product) }}
+                                                                                <span>
+                                                                                    ৳</span></span>
                                                                             <div id="preloader" style="display: none;">
                                                                                 <img src="{{ asset('assets/front-end/img/loader_.gif') }}"
                                                                                     alt="Loading..." width="20">
@@ -660,7 +728,13 @@
                                 <form>
                         </div>
                     </div>
-
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3 mx-auto">
+                    <div class="form-group my-3">
+                        <a href="{{ route('home') }}" class="btn btn-primary">Get More Products</a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -668,13 +742,14 @@
 @endsection
 @push('scripts')
     @php
-        $unitPrice = $productLandingPage->product->unit_price;
+        $price = \App\CPU\Helpers::get_price_range($productLandingPage->product);
+        $cleanPrice = floatval(str_replace(',', '', $price));
         $shippingMethods = \App\Model\ShippingMethod::where(['status' => 1])->get();
     @endphp
 
     <script>
-        const unitPrice = {{ \App\CPU\Helpers::currency_converter2($unitPrice) }};
-        //console.log(unitPrice);
+        const unitPrice = {{ $cleanPrice }};
+        console.log(unitPrice);
         // Pre-converted shipping costs from the backend
         const shippingPrices = {
             @foreach ($shippingMethods as $shipping)
@@ -697,7 +772,8 @@
 
 
                     // Update the total element with the new total
-                    totalElement.innerHTML = total.toFixed(2); // Assuming 2 decimal points
+                    totalElement.innerHTML = total.toFixed(2) +
+                        "<span> ৳</span>"; // Assuming 2 decimal points
                     preloader.style.display = 'none'; // Hide preloader after update
                 }, 1500); // Simulate a delay for 1.5 seconds
             }
@@ -710,6 +786,37 @@
                     updateTotal(shippingCost);
                 });
             });
+        });
+    </script>
+    <script>
+        document.getElementById('phone').addEventListener('input', function() {
+            const phoneInput = this.value;
+            const phoneFeedback = document.getElementById('phoneFeedback');
+            const regex = /^(01[3-9]\d{8})$/;
+
+            if (phoneInput === '') {
+                phoneFeedback.textContent = '';
+            } else if (!regex.test(phoneInput)) {
+                phoneFeedback.classList.add('text-danger');
+                phoneFeedback.textContent = 'Please enter a valid Bangladeshi phone number (e.g. 0171XXXXXXX)';
+            } else {
+                phoneFeedback.textContent = 'Valid phone number!';
+                phoneFeedback.classList.remove('text-danger');
+                phoneFeedback.classList.add('text-success');
+            }
+        });
+
+        // Also validate when the field loses focus
+        document.getElementById('phone').addEventListener('blur', function() {
+            const phoneInput = this.value;
+            const phoneFeedback = document.getElementById('phoneFeedback');
+            const regex = /^(01[3-9]\d{8})$/;
+
+            if (phoneInput === '') {
+                phoneFeedback.textContent = 'Phone number is required';
+            } else if (!regex.test(phoneInput)) {
+                phoneFeedback.textContent = 'Please enter a valid Bangladeshi phone number (e.g. 0171XXXXXXX)';
+            }
         });
     </script>
 @endpush

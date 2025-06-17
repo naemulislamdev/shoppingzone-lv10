@@ -16,7 +16,7 @@
         color: #ffffff;
         margin-top: 12px;
     }
-    header.scrolled .menu-icon {color: #232323;}
+    header.scrolled .menu-icon {color: #fff;}
 
     .menu-area {
         display: none;
@@ -57,10 +57,10 @@
     }
     .topbar-section{display: none;}
     .menu-icon {
-        color: #232323;
+        color: #fff;
     }
     .header-icon > a > .fa {
-        color: #232323;
+        color: #fff;
     }
     .header-icon {
         margin-top: 13px;

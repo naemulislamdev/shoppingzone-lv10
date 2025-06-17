@@ -112,17 +112,6 @@
     @php
         $request = request()->route()->getName();
     @endphp
-    @if ($request != 'home')
-        <style>
-            .menu-area>ul>li>a {
-                color: #1a1919;
-            }
-
-            .header-icon>a>.fa {
-                color: #1a1919;
-            }
-        </style>
-    @endif
 
     @php($google_tag_manager_id = \App\CPU\Helpers::get_business_settings('google_tag_manager_id'))
     @if ($google_tag_manager_id)

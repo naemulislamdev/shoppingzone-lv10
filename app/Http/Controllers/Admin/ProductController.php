@@ -239,12 +239,12 @@ class ProductController extends BaseController
                 $p->images = json_encode($product_images);
             }
             //$p->thumbnail = ImageManager::upload('product/thumbnail/', 'png', $request->image);
-            $p->thumbnail = Helpers::uploadWithCompress('product/thumbnail/', 'png', $request->image, 150);
-            $p->size_chart = ImageManager::upload('product/thumbnail/', 'png', $request->size_chart);
+            $p->thumbnail = Helpers::uploadWithCompress('product/thumbnail/', 'png', 300, $request->image);
+            $p->size_chart = Helpers::uploadWithCompress('product/thumbnail/', 'png', 300, $request->size_chart);
 
             $p->meta_title = $request->meta_title;
             $p->meta_description = $request->meta_description;
-            $p->meta_image = ImageManager::upload('product/meta/', 'png', $request->meta_image);
+            $p->meta_image = Helpers::uploadWithCompress('product/meta/', 'png', 300, $request->meta_image);
 
             $p->save();
 
@@ -665,23 +665,24 @@ class ProductController extends BaseController
         } else {
             if ($request->file('images')) {
                 foreach ($request->file('images') as $img) {
-                    $product_images[] = ImageManager::upload('product/', 'png', $img);
+                    //$product_images[] = ImageManager::upload('product/', 'png', $img);
+                    $product_images[] = Helpers::uploadWithCompress('product/', 'png', $img, 300);
                 }
                 $product->images = json_encode($product_images);
             }
 
             if ($request->file('image')) {
-                $product->thumbnail = ImageManager::update('product/thumbnail/', $product->thumbnail, 'png', $request->file('image'));
+                $product->thumbnail = Helpers::updateWithCompress('product/thumbnail/', $product->thumbnail, 'png', $request->file('image'));
             }
 
             if ($request->file('size_chart')) {
-                $product->size_chart = ImageManager::update('product/thumbnail/', $product->size_chart, 'png', $request->file('size_chart'));
+                $product->size_chart = Helpers::updateWithCompress('product/thumbnail/', $product->size_chart, 'png', $request->file('size_chart'));
             }
 
             $product->meta_title = $request->meta_title;
             $product->meta_description = $request->meta_description;
             if ($request->file('meta_image')) {
-                $product->meta_image = ImageManager::update('product/meta/', $product->meta_image, 'png', $request->file('meta_image'));
+                $product->meta_image = Helpers::updateWithCompress('product/meta/', $product->meta_image, 'png', $request->file('meta_image'));
             }
 
             $product->save();

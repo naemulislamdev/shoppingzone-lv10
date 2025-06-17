@@ -459,7 +459,7 @@ $route = request()->route()->getName();
                             class="nav-subtitle">AI Analysis</small>
                         <small class="tio-more-horizontal nav-subtitle-replacer"></small>
                     </li>
-                    <li class="navbar-vertical-aside-has-menu {{Request::is('admin/analysis/*')?'active':''}}">
+                    <li class="navbar-vertical-aside-has-menu {{Request::is('admin/analysis/*')?'active':''}} show">
                         <a class="js-navbar-vertical-aside-menu-link nav-link nav-link-toggle" href="javascript:">
                             <i class="tio-filter-outlined nav-icon"></i>
                             <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">Product Analysis</span>
@@ -1035,9 +1035,7 @@ $route = request()->route()->getName();
                                 </a>
                             </li>
 
-                            <li class="navbar-vertical-aside-has-menu {{ $route == 'admin.landingpages.landing' || $route == 'admin.landingpages.index'  ?'active':''
-
-                            }}">
+                            <li class="navbar-vertical-aside-has-menu {{ $route == 'admin.landingpages.landing' || $route == 'admin.landingpages.index'  ?'show':'' }}">
                                 <a class="js-navbar-vertical-aside-menu-link nav-link nav-link-toggle"
                                    href="javascript:">
                                    <i class="tio-flash nav-icon"></i>

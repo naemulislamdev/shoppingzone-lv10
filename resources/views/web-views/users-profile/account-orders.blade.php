@@ -168,10 +168,10 @@
                                                 <i class="fa fa-trash"></i> {{\App\CPU\translate('cancel')}}
                                             </button>
                                         @endif
-                                        @if($order['order_status']=='confirmed')
+                                        @if($order['order_status']=='confirmed' || $order['order_status']=='delivered')
                                         <a href="{{ route('submit-review', $order->sellerName->id) }}"
                                             class="btn btn-primary p-2 mb-2">
-                                             <i class="fa fa-eye"></i> {{\App\CPU\translate('Weite a Review')}}
+                                             <i class="fa fa-eye"></i> {{\App\CPU\translate('Write a Review')}}
                                          </a>
                                          @endif
                                     </td>

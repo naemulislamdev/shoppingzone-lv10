@@ -31,6 +31,7 @@ class LandingPagesController extends Controller
     public function landing_submit(Request $request)
     {
         $this->validate($request, [
+            'title' => 'required|string',
             'images' => 'required',
             'mid_banner' => 'required',
             'left_side_banner' => 'required',
@@ -52,14 +53,14 @@ class LandingPagesController extends Controller
         }
 
         $flash_deal_id = DB::table('landing_pages')->insertGetId([
-            'title' => $request['title'][array_search('en', $request->lang)],
+            'title' => $request['title'],
             'main_banner' => $images,
             'mid_banner' => $request->has('mid_banner') ? ImageManager::upload('deal/', 'png', $request->file('mid_banner')) : 'def.png',
             'left_side_banner' => $request->has('left_side_banner') ? ImageManager::upload('deal/', 'png', $request->file('left_side_banner')) : 'def.png',
             'right_side_banner' => $request->has('right_side_banner') ? ImageManager::upload('deal/', 'png', $request->file('right_side_banner')) : 'def.png',
-            'meta_title' => $request['title'][array_search('en', $request->lang)],
+            'meta_title' => $request['title'],
             'meta_description' => $request['meta_description'],
-            'slug' => Str::slug($request['title'][array_search('en', $request->lang)]),
+            'slug' => Str::slug($request['title']),
             'status' => 0,
             'created_at' => now(),
             'updated_at' => now(),
@@ -74,17 +75,21 @@ class LandingPagesController extends Controller
     public function status_update(Request $request)
     {
 
-        $lPage = DB::table('landing_pages')->get();
-        foreach ($lPage as $item) {
-            $status = 0;
-            if ($item->id == $request['id']) {
-                $status = 1;
-            }
-            DB::table('landing_pages')->where(['id' => $item->id])->update([
-                'status' => $status,
-            ]);
-        }
+        // $lPage = DB::table('landing_pages')->get();
+        // foreach ($lPage as $item) {
+        //     $status = 0;
+        //     if ($item->id == $request['id']) {
+        //         $status = 1;
+        //     }
+        //     DB::table('landing_pages')->where(['id' => $item->id])->update([
+        //         'status' => $status,
+        //     ]);
+        // }
 
+
+        DB::table('landing_pages')->where(['id' => $request['id']])->update([
+            'status' => $request['status'],
+        ]);
         return response()->json([
             'success' => 1,
         ], 200);
@@ -223,6 +228,7 @@ class LandingPagesController extends Controller
         $images = null;
         if ($request->file('images')) {
             foreach ($request->file('images') as $img) {
+                //dd($img);
                 $main_slider_images[] = ImageManager::upload('landingpage/slider/', 'png', $img);
             }
             $images = json_encode($main_slider_images);
@@ -237,7 +243,7 @@ class LandingPagesController extends Controller
         $productLandingpage = ProductLandingPage::create([
             'title' => $request->title,
             'slug' => Str::slug($request->title),
-            'slider_images' => $images,
+            'slider_img' => $images,
             'product_id' => $request->product_id,
             'description' => $request->description,
             'feature_list' => $featureList,
@@ -271,7 +277,6 @@ class LandingPagesController extends Controller
     }
     public function LandingPageStatus(Request $request)
     {
-
         // DB::table('landing_pages')->where(['status' => 1])->update(['status' => 0]);
         ProductLandingPage::where(['id' => $request['id']])->update([
             'status' => $request['status'],

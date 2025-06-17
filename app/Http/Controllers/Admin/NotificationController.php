@@ -74,7 +74,7 @@ class NotificationController extends Controller
 
     try {
         // Send the data to the API
-        $response = Http::post('https://erpever.evertechit.com/api/send/evertech/notification', $apiData);
+        $response = Http::post('https://admin.szbdfinancing.com/api/send/evertech/notification', $apiData);
 
         // Check if the API request was successful
         if ($response->successful()) {
@@ -87,7 +87,7 @@ class NotificationController extends Controller
     }
 
     return back();
-}
+}//01713956717
 
 
     public function edit($id)
@@ -142,7 +142,7 @@ class NotificationController extends Controller
             Helpers::send_push_notif_to_topic($notification);
             $notification->notification_count += 1;
             $notification->save();
-            $response = Http::post('https://erpever.evertechit.com/api/send/evertech/notification', $apiData);
+            $response = Http::post('https://admin.szbdfinancing.com/api/send/evertech/notification', $apiData);
             $data['success'] = true;
             $data['message'] = \App\CPU\translate("Push notification successfully!");
         } catch (\Exception $e) {

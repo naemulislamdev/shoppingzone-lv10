@@ -185,6 +185,7 @@ Route::controller(CartController::class)->prefix('/cart')->as('cart.')->group(fu
     Route::post('/nav-cart-items', 'updateNavCart')->name('nav_cart');
     Route::post('total-cart-count', 'totalCartCount')->name('totalCart');
     Route::post('/updateQuantity', 'updateQuantity')->name('updateQuantity');
+    Route::get('/subdomain-ordernow/{id}', 'subdomainOrdernow');
     // In web.php
     // Route::post('/add-to-cart', 'CartController@addToCart')->name('add.to.cart');
 

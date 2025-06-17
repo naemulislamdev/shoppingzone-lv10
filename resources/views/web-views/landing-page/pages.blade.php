@@ -87,8 +87,7 @@
                             <div class="main-banner">
                                 <img class="d-block w-100"
                                     onerror="this.src='{{ asset('assets/front-end/img/image-place-holder.png') }}'"
-                                    src="{{ asset('storage/deal/main-banner') }}/{{ $banner }}"
-                                    alt="">
+                                    src="{{ asset('storage/deal/main-banner') }}/{{ $banner }}" alt="">
                             </div>
                         </div>
                     @endforeach
@@ -113,8 +112,7 @@
                 <div class="left-banner">
                     {{-- <h4>Special Offer</h4>
                     <p>Get up to 50% off on selected items. Hurry, offer ends soon!</p> --}}
-                    <img src="{{ asset('storage/deal') }}/{{ $landing_page->left_side_banner }}"
-                        alt="">
+                    <img src="{{ asset('storage/deal') }}/{{ $landing_page->left_side_banner }}" alt="">
                 </div>
             </div>
 
@@ -126,7 +124,7 @@
                         <!-- Your product columns go here -->
                         @foreach ($landing_products as $key => $product)
                             @if ($key < 6)
-                                <div class="col-md-4">
+                                <div class="col-md-4 mb-3">
                                     <div class="product-box product-box-col-3">
                                         <input type="hidden" name="quantity"
                                             value="{{ $product->minimum_order_qty ?? 1 }}"
@@ -189,6 +187,15 @@
                                                 @endfor
                                                 <label class="badge-style">( {{ $product->reviews_count }} )</label>
                                             </span>
+                                        </div>
+
+                                    </div>
+                                    <div class="col-md-12 text-center d-md-none">
+                                        <div class="mobile-btn justify-content-center align-items-center">
+                                            <button type="button" class="btn btn-warning text-white text-bold"
+                                                onclick="buy_now('form-{{ $product->id }}')">Order Now</button>
+                                            <a href="{{ route('product', $product->slug) }}" class="btn btn-info">View
+                                                Details</a>
                                         </div>
                                     </div>
                                 </div>
@@ -319,8 +326,8 @@
         <div class="row my-3">
             <div class="col">
                 <div class="middle-banner">
-                    <img style="width: 100%;"
-                        src="{{ asset('storage/deal') }}/{{ $landing_page->mid_banner }}" alt="">
+                    <img style="width: 100%;" src="{{ asset('storage/deal') }}/{{ $landing_page->mid_banner }}"
+                        alt="">
                 </div>
             </div>
         </div>
@@ -334,7 +341,7 @@
                         <!-- Your product columns go here -->
                         @foreach ($landing_products as $key => $product)
                             @if ($key > 5)
-                                <div class="col-md-4">
+                                <div class="col-md-4 mb-3">
                                     <div class="product-box product-box-col-3">
                                         <input type="hidden" name="quantity"
                                             value="{{ $product->minimum_order_qty ?? 1 }}"
@@ -397,6 +404,14 @@
                                                 @endfor
                                                 <label class="badge-style">( {{ $product->reviews_count }} )</label>
                                             </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 text-center d-md-none">
+                                        <div class="mobile-btn justify-content-center align-items-center">
+                                            <button type="button" class="btn btn-warning text-white text-bold"
+                                                onclick="buy_now('form-{{ $product->id }}')">Order Now</button>
+                                            <a href="{{ route('product', $product->slug) }}" class="btn btn-info">View
+                                                Details</a>
                                         </div>
                                     </div>
                                 </div>
@@ -527,11 +542,17 @@
                     <div class="left-banner">
                         {{-- <h4>Special Offer</h4>
                     <p>Get up to 50% off on selected items. Hurry, offer ends soon!</p> --}}
-                        <img src="{{ asset('storage/deal') }}/{{ $landing_page->right_side_banner }}"
-                            alt="">
+                        <img src="{{ asset('storage/deal') }}/{{ $landing_page->right_side_banner }}" alt="">
                     </div>
                 </div>
             </div>
         @endif
+        <div class="row">
+            <div class="col-md-3 mx-auto">
+                <div class="form-group my-3">
+                    <a href="{{ route('home') }}" class="btn btn-primary">Get More Products</a>
+                </div>
+            </div>
+        </div>
     </div>
 @endsection

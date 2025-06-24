@@ -1,15 +1,10 @@
-@extends('errors.minimal')
-
-@section('message')
+@extends('layouts.front-end.app')
+@section('title', \App\CPU\translate('Page Not Found'))
+@section('content')
     <style>
         .for-margin {
             margin: auto;
-
             margin-bottom: 10%;
-        }
-
-        .for-margin {
-
         }
 
         .page-not-found {
@@ -18,7 +13,7 @@
             text-align: center;
         }
     </style>
-    <div class="container ">
+    <div class="container">
         <div class="col-md-3"></div>
         <div class="col-md-6 for-margin">
             <div class="for-image">

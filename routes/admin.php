@@ -294,7 +294,6 @@ Route::prefix('/admin')->as('admin.')->group(function () {
             Route::post('delete/review', 'deleteProductReview')->name('product.delete')->middleware('actch');
             Route::get('customer-list', 'clientList')->name('clientList')->middleware('actch');
             Route::get('export', 'export')->name('export')->middleware('actch');
-            //Route::get('export', 'export')->name('export')->middleware('actch');
             Route::get('status/{id}/{status}', 'status')->name('status');
             Route::get('reviewstatus/{id}/{status}', 'reviewstatus')->name('reviewstatus');
         });

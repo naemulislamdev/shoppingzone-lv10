@@ -38,6 +38,53 @@
     }
     .navbar{background: #091731;}
 </style>
+<style>
+        .menu-search-container {
+            position: relative;
+            margin-bottom: 15px;
+        }
+
+        .menu-search-results {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            max-height: 300px;
+            overflow-y: auto;
+            display: none;
+        }
+
+        .menu-search-result-item {
+            padding: 8px 15px;
+            cursor: pointer;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            align-items: center;
+        }
+
+        .menu-search-result-item:hover {
+            background-color: #f5f5f5;
+        }
+
+        .menu-search-result-item i {
+            margin-right: 10px;
+            color: #777;
+        }
+
+        .menu-search-result-item .text {
+            flex-grow: 1;
+        }
+
+        .menu-search-highlight {
+            background-color: #fff8c4;
+            padding: 0 2px;
+        }
+    </style>
 <?php
 $route = request()->route()->getName();
 ?>
@@ -68,6 +115,7 @@ $route = request()->route()->getName();
                 <div class="navbar-vertical-content mt-2">
                     <ul class="navbar-nav navbar-nav-lg nav-tabs">
                         <!-- Dashboards -->
+                        <input type="text" name="manue_search" class="form-control">
 
                         <li class="navbar-vertical-aside-has-menu {{Request::is('admin/dashboard')?'active':''}}">
                             <a class="js-navbar-vertical-aside-menu-link nav-link"

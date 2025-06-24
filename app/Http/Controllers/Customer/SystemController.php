@@ -215,43 +215,13 @@ class SystemController extends Controller
             'shipping_method_id' => 'required',
             'payment_method' => 'required|in:cash_on_delivery,online_payment'
         ]);
-        // Check if user is authenticated
-        // if (auth('customer')->check()) {
-        //     $authUser = auth('customer')->user();
-        // } else {
-        //     // Try to find the user by phone number
-        //     $oldCustomer = User::where('phone', $request->phone)->first();
-        //     $remember = true;
 
-        //     if ($oldCustomer) {
-        //         // Old user but not authenticated, log them in
-        //         auth('customer')->login($oldCustomer, $remember);
-        //         $authUser = auth('customer')->user();
-        //     } else {
-        //         // New user, create an account and log them in
-        //         $email = $request->phone . '_bd@gmail.com';
-        //         if ($request->email) {
-        //             $email = $request->email;
-        //         }
-
-        //         $password = bcrypt($request->phone);
-
-        //         // Create a new user
-        //         $newUser = User::create([
-        //             'f_name' => $request->name,
-        //             'l_name' => 'bd' . rand(),
-        //             'email' => $email,
-        //             'phone' => $request->phone,
-        //             'password' => $password
-        //         ]);
-
-        //         // Log in the new user
-        //         auth('customer')->login($newUser, $remember);
-        //         $authUser = auth('customer')->user();
-        //     }
-        // }
         $authUser = Helpers::get_customer_check($request);
         if ($authUser) {
+            if($authUser->is_active == 0){
+                Toastr::error('Your account is inactive. Please contact support.');
+                return redirect()->back();
+            }
             $shippingAddress = new ShippingAddress();
             $shippingAddress->customer_id = auth('customer')->id();
             $shippingAddress->contact_person_name = $request->name;

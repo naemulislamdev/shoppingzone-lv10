@@ -871,9 +871,13 @@ class WebController extends Controller
     public function landingPage($landing_slug)
     {
         $landing_page = DB::table('landing_pages')->where(['slug' => $landing_slug])->where('status', 1)->first();
+        if($landing_page == null){
+            Toastr::warning('page not found');
+            return view('errors.page_error');
+
+        }
         $landing_page_pro = DB::table('landing_pages_products')->where('landing_id', $landing_page->id)->pluck('product_id')->toArray();
         $landing_products = Product::with(['rating'])->whereIn('id', $landing_page_pro)->orderBy('id', 'DESC')->active()->get();
-        // dd($landing_page_pro);
         return view('web-views.landing-page.pages', compact('landing_products', 'landing_page'));
     }
     public function signleProductLandingPage($slug)

@@ -1848,4 +1848,6 @@
   'Comment' => 'Comment',
   'Are_you_sure_delete_this_review' => 'Are you sure delete this review',
   'Review_deleted_successfully' => 'Review deleted successfully',
+  'Page Not Found' => 'Page Not Found',
+  'Invoice' => 'Invoice',
 );
